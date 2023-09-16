@@ -48,6 +48,7 @@ const Main = () => {
         }} onClick={e => e.stopPropagation()}>
           {connectors.map(connector => (
             <div style={{
+              cursor: 'pointer',
               color: 'white',
               background: 'linear-gradient(180deg, rgb(106.62, 62.2, 236.94) 0%, rgb(149.57, 62.2, 236.94) 100%)',
               borderRadius: '9px',
@@ -65,7 +66,7 @@ const Main = () => {
       </div>
       <div className="home-zero-state">
         <div className="div-2">
-          <div className="group-52" style={isConnected ? {width: '95px'} : {width: '120px'}}>
+          <div className="group-52" style={isConnected ? {width: '95px', cursor: 'pointer'} : {width: '120px', cursor: 'pointer'}}>
             <div className="group-53">
               <div className="group-54">
                 <div className="fourth-link-103" onClick={() => {
