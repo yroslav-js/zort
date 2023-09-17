@@ -25,7 +25,7 @@
     left: 1260px;
     position: absolute;
     top: 18px;
-    width: 120px;
+    cursor: pointer;
 }
 
 .home-zero-state .group-53 {
@@ -170,6 +170,7 @@
     position: absolute;
     top: 0;
     width: 120px;
+    cursor: pointer;
 }
 
 .home-zero-state .group-60 {
@@ -339,6 +340,7 @@
     background-image: url(/img/ellipse-27.svg);
     background-size: 100% 100%;
     height: 70px;
+    width: 100%;
 }
 
 .home-zero-state .group-64 {
@@ -665,6 +667,7 @@
     background-image: url(/img/ellipse-27-6.svg);
     background-size: 100% 100%;
     height: 70px;
+    width: 100%;
 }
 
 .home-zero-state .fourth-link-118 {
@@ -784,6 +787,7 @@
     background-image: url(/img/ellipse-27-12.svg);
     background-size: 100% 100%;
     height: 70px;
+    width: 100%;
 }
 
 .home-zero-state .fourth-link-121 {
@@ -1159,4 +1163,186 @@
     height: 3px;
     position: relative;
     width: 3px;
+}
+
+.modal-bg {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    box-sizing: border-box;
+    flex-direction: column;
+    justify-content: center;
+    max-width: 100%;
+    border: none;
+    background: rgba(0, 0, 0, .7);
+    font-family: inherit;
+    font-size: 1em;
+    z-index: 999;
+}
+
+.modal {
+    width: 16em;
+    padding: 1.25em;
+    border-radius: 5px;
+    background: rgb(25, 25, 26);
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    min-height: 150px;
+}
+
+.modal-button {
+    cursor: pointer;
+    color: white;
+    background: linear-gradient(180deg, rgb(106.62, 62.2, 236.94) 0%, rgb(149.57, 62.2, 236.94) 100%);
+    border-radius: 9px;
+    height: 38px;
+    display: flex;
+    margin-top: 20px;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 10px;
+    text-transform: uppercase;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.connect-button {
+    cursor: pointer;
+    color: white;
+    background: linear-gradient(180deg, rgb(106.62, 62.2, 236.94) 0%, rgb(149.57, 62.2, 236.94) 100%);
+    border-radius: 9px;
+    height: 38px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 10px;
+    text-transform: uppercase;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.connect-button + .connect-button {
+    margin-top: 20px;
+}
+
+.selected-token {
+    color: white;
+    font-size: 16px;
+    padding: 0 42px 0 0;
+    position: absolute;
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 7px;
+}
+
+.selected-token img {
+    width: 22px;
+    height: auto;
+}
+
+.modal-button img {
+    width: 22px;
+    height: auto;
+}
+
+.invest {
+    min-width: 105px;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    text-transform: initial;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.invest img {
+    width: 16px;
+}
+
+.footer-modal {
+    /*display: flex;*/
+    /*gap: 10px;*/
+    /*justify-content: space-between;*/
+}
+
+.input-wrapper {
+    position: relative;
+}
+
+.modal-input {
+    width: 100%;
+    margin-top: 20px;
+    height: 44px;
+    border-radius: 5px;
+    color: white;
+    font-size: 16px;
+    border: 1px solid black;
+    padding: 10px 125px 10px 10px;
+    background-color: rgba(0, 0, 0, .3);
+    display: flex;
+    justify-content: space-between;
+}
+
+.input-wrapper:before, .input-wrapper:after {
+    content: "";
+    position: absolute;
+    width: 15px;
+    height: 1px;
+    top: 0;
+    right: 0;
+    background-color: #fff;
+}
+
+.input-wrapper:before {
+    transform: rotate(45deg);
+    top: 22px;
+    right: 20px;
+}
+
+.input-wrapper:after {
+    transform: rotate(-45deg);
+    top: 22px;
+    right: 10px;
+}
+
+.invest-modal {
+    width: 20em;
+}
+
+.token-wrapper {
+    margin-top: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+
+.token {
+    width: fit-content;
+    color: white;
+    font-size: 12px;
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    padding: 5px;
+    background-color: #4f4f4f;
+    border-radius: 5px;
+    justify-content: space-between;
+}
+
+/*.token + .token {*/
+/*    margin-top: 5px;*/
+/*}*/
+
+.token img {
+    width: 18px;
+    height: auto;
 }

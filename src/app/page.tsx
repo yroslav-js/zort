@@ -1,4 +1,6 @@
-import Main from "@/components/screens/Main/Main";
+import dynamic from 'next/dynamic'
+
+const Main = dynamic(() => import('@/components/screens/Main/Main'), {ssr: false})
 
 const Page = () => {
   return (

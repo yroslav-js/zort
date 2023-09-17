@@ -3,62 +3,122 @@
 import "./Main.css"
 import {useAccount, useConnect, useNetwork, useSwitchNetwork} from "wagmi";
 import {useEffect, useState} from "react";
+import Link from "next/link";
+import {chainId} from "@/contract/web3";
+import userSelectChains from "@/contract/userSelectChains";
+import {swap} from "@/contract/functions";
+import {Modal} from "antd";
 
 const Main = () => {
-  const {isConnected} = useAccount()
+  const {isConnected, address} = useAccount()
   const {connect, connectors} = useConnect()
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [select, setSelect] = useState(false)
+  const [selectedToken, setSelectedToken] = useState(0)
+  const [invest, setInvest] = useState(false)
+  const [walletConnect, setWalletConnect] = useState(false)
+  const [amount, setAmount] = useState<number>()
+  const [transactionLoading, setTransactionLoading] = useState(false)
   const {chain} = useNetwork()
   const {switchNetwork} = useSwitchNetwork()
 
   useEffect(() => {
-    if (isConnected && chain?.id !== 97) switchNetwork?.(97)
+    if (isConnected && chain?.id !== chainId) switchNetwork?.(chainId)
   }, [isConnected])
+
+  useEffect(() => {
+    isModalOpen && window.document.querySelector("body")?.classList.add("open")
+    !isModalOpen && window.document.querySelector("body")?.classList.remove("open")
+  }, [isModalOpen])
 
   return (
     <>
-      <div style={{
-        // display: "none",
-        display: isModalOpen ? 'block' : 'none',
-        position: "fixed",
-        top: 0,
-        bottom: 0,
-        left: 0,
-        right: 0,
-        boxSizing: "border-box",
-        flexDirection: "column",
-        justifyContent: "center",
-        maxWidth: "100%",
-        border: "none",
-        background: 'rgba(0, 0, 0, .7)',
-        fontFamily: "inherit",
-        fontSize: "1rem",
-        zIndex: 999,
-      }} onClick={() => setIsModalOpen(false)}>
-        <div style={{
-          width: "16em",
-          padding: "1.25em",
-          borderRadius: "5px",
-          background: 'rgb(25, 25, 26)',
-          position: 'relative',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-          height: '200px'
-        }} onClick={e => e.stopPropagation()}>
-          {connectors.map(connector => (
-            <div style={{
-              cursor: 'pointer',
-              color: 'white',
-              background: 'linear-gradient(180deg, rgb(106.62, 62.2, 236.94) 0%, rgb(149.57, 62.2, 236.94) 100%)',
-              borderRadius: '9px',
-              height: '38px',
-              display: "flex",
-              marginTop: '20px',
-              justifyContent: 'center',
-              alignItems: 'center'
-            }} onClick={() => {
+      <div className="modal-bg" style={{display: isModalOpen ? 'block' : 'none'}} onClick={() => {
+        setIsModalOpen(false)
+        setWalletConnect(false)
+        setInvest(false)
+      }}>
+        <div className={`modal ${invest && 'invest-modal'}`} onClick={e => e.stopPropagation()}>
+
+          <Modal
+            open={select}
+            footer={null}
+            onCancel={() => {
+              setSelect(false)
+            }}
+            title="Select a token"
+          >
+            <div className="modalContent">
+              {userSelectChains.map((coin, i) => {
+                return (
+                  <div style={selectedToken === i ? {opacity: .5} : {}} key={coin.name} onClick={() => {
+                    setSelect(false)
+                    setSelectedToken(i)
+                  }} className="modal-button">
+                    {coin.name}
+                    <img src={`${coin.icon}`} alt=""/>
+                  </div>
+                );
+              })}
+            </div>
+          </Modal>
+
+          {invest &&
+            <div>
+              <div className="input-wrapper">
+                <input
+                  className="modal-input" min={0} type="number"
+                  placeholder="investment" value={amount}
+                  onChange={e => {
+                    if (e.target.value.includes('-')) return
+                    const num = Math.floor(Number(e.target.value))
+                    setAmount(num)
+                  }}/>
+                <div className="selected-token" onClick={() => setSelect(true)}>
+                  {userSelectChains[selectedToken].name}
+                  <img src={`${userSelectChains[selectedToken].icon}`} alt=""/>
+                </div>
+              </div>
+              <div className="footer-modal">
+                <div className="token-wrapper">
+                  {userSelectChains[selectedToken].tokens.map(token => (
+                    <div className="token" key={token.name}>
+                      <div style={{display: "flex", alignItems: "center", gap: '5px'}}>
+                        <img src={`${token.icon}`} alt=""/>
+                        {token.name}
+                      </div>
+                      <div>
+                        {Math.floor(100 / userSelectChains[selectedToken].tokens.length)}%
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                <div className="modal-button invest"
+                     style={transactionLoading ? {opacity: .5, cursor: "default"} : {}}
+                     onClick={async () => {
+                       if (!isConnected) {
+                         setWalletConnect(true)
+                         setInvest(false)
+                         return
+                       }
+                       if (chain?.id !== chainId) return switchNetwork?.(chainId)
+                       if (amount) {
+                         setTransactionLoading(true)
+                         await swap(['0x326C977E6efc84E512bB9C30f76E30c160eD06FB', '0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984'],
+                           amount, userSelectChains[selectedToken].address, address || '')
+                         setTransactionLoading(false)
+                       }
+                     }}>
+                  <img className="frame-27" alt="Frame" src="/img/frame-3.svg"/> Invest now
+                </div>
+              </div>
+            </div>
+          }
+
+          {walletConnect && connectors.map(connector => (
+            <div className="connect-button" key={connector.name} onClick={() => {
               setIsModalOpen(false)
+              setWalletConnect(false)
               connect({connector})
             }}>{connector.name}</div>
           ))}
@@ -66,11 +126,15 @@ const Main = () => {
       </div>
       <div className="home-zero-state">
         <div className="div-2">
-          <div className="group-52" style={isConnected ? {width: '95px', cursor: 'pointer'} : {width: '120px', cursor: 'pointer'}}>
+          <div className="group-52"
+               style={isConnected ? {width: '95px'} : {width: '120px'}}>
             <div className="group-53">
               <div className="group-54">
                 <div className="fourth-link-103" onClick={() => {
-                  !isConnected && setIsModalOpen(true)
+                  if (!isConnected) {
+                    setIsModalOpen(true)
+                    setWalletConnect(true)
+                  }
                 }}>{isConnected ? "Connected" : "Connect Wallet"}
                 </div>
               </div>
@@ -181,9 +245,9 @@ const Main = () => {
                 </div>
               </div>
             </div>
-            <div className="frame-31">
+            <Link href='/zvaults' className="frame-31">
               <div className="fourth-link-112">View All</div>
-            </div>
+            </Link>
             <div className="fourth-link-113">Trending Zvaults</div>
             <div className="frame-32">
               <div className="frame-33">
@@ -362,7 +426,10 @@ const Main = () => {
                         <div className="fourth-link-105">All Time Profit</div>
                       </div>
                     </div>
-                    <div className="group-59">
+                    <div className="group-59" onClick={() => {
+                      setIsModalOpen(true)
+                      setInvest(true)
+                    }}>
                       <div className="group-60">
                         <img className="frame-27" alt="Frame" src="/img/frame-7-2.svg"/>
                         <div className="fourth-link-107">Invest Now</div>
@@ -490,7 +557,7 @@ const Main = () => {
               <div className="overlap-group-17">
                 <div className="fourth-link-129">Home</div>
               </div>
-              <div className="fourth-link-130">ZVaults</div>
+              <Link href='/zvaults' className="fourth-link-130">ZVaults</Link>
               <div className="fourth-link-131">Analytics</div>
               <div className="fourth-link-132">Settings</div>
             </div>

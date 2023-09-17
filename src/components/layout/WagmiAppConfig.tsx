@@ -2,14 +2,14 @@
 
 import {configureChains, createConfig, WagmiConfig} from 'wagmi';
 import {
-  bscTestnet,
+  goerli
 } from 'wagmi/chains';
 import {EthereumClient, w3mProvider} from "@web3modal/ethereum";
 import {ReactNode} from "react";
 import {WalletConnectConnector} from "@wagmi/connectors/walletConnect";
 import {MetaMaskConnector} from "@wagmi/connectors/metaMask";
 
-const chains = [bscTestnet]
+const chains = [goerli]
 const projectId = '076b09ffd10c89c5ba6f6be50cfa13b2'
 
 const {publicClient} = configureChains(chains, [w3mProvider({projectId})])
