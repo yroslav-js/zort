@@ -17,7 +17,7 @@ const Main = () => {
   const [selectedToken, setSelectedToken] = useState(0)
   const [invest, setInvest] = useState(false)
   const [walletConnect, setWalletConnect] = useState(false)
-  const [amount, setAmount] = useState<number>()
+  const [amount, setAmount] = useState('')
   const [transactionLoading, setTransactionLoading] = useState(false)
   const {chain} = useNetwork()
   const {switchNetwork} = useSwitchNetwork()
@@ -71,8 +71,8 @@ const Main = () => {
                   placeholder="investment" value={amount}
                   onChange={e => {
                     if (e.target.value.includes('-')) return
-                    const num = Math.floor(Number(e.target.value))
-                    setAmount(num)
+                    // const num = Math.floor(Number(e.target.value))
+                    setAmount(e.target.value)
                   }}/>
                 <div className="selected-token" onClick={() => setSelect(true)}>
                   {userSelectChains[selectedToken].name}

@@ -1,8 +1,10 @@
-import {BigNumber, ethers} from "ethers";
+import {BigNumber as BigNumberEthers, ethers} from "ethers";
 import abi from "@/contract/abi";
 import {CONTRACT_ADDRESS} from "@/contract/config";
+import BigNumber from "bignumber.js";
 
-export const swap = async (coins: string[], amount: number, coinsSelectUser: string, userAddress: string): Promise<any> => {
+
+export const swap = async (coins: string[], amount: string, coinsSelectUser: string, userAddress: string): Promise<any> => {
   try {
     // const coinsSelectUser = '0xC886F960B1433F913a7cC59dC06f04A25678dd2A';
     // coins = [
@@ -17,17 +19,14 @@ export const swap = async (coins: string[], amount: number, coinsSelectUser: str
       fee: number;
       recipient: string;
       deadline: string | Date;
-      amountIn: string | BigNumber;
+      amountIn: string | BigNumberEthers;
       amountOutMinimum: number;
       sqrtPriceLimitX96: number;
     }
 
     //balanceof
 
-    console.log(amount)
-
     let abiToken = ["function approve(address _spender, uint256 _value) public returns (bool success)"]
-
 
 
     const getContract = () => {
@@ -37,12 +36,11 @@ export const swap = async (coins: string[], amount: number, coinsSelectUser: str
     }
 
     console.log(amount)
-    // console.log(BigNumber.from(amount))
-    // console.log(BigNumber.from(amount * 10 ** 18))
+    // console.log(BigNumberEthers.from(amount))
+    // console.log(BigNumberEthers.from(amount * 10 ** 18))
 
-    const t = await getContract().approve(CONTRACT_ADDRESS, BigNumber.from(amount).mul('10000000000000000'))
+    const t = await getContract().approve(CONTRACT_ADDRESS, new BigNumber(amount).multipliedBy(1e18).toString())
     await t.wait()
-    // approve
 
     const swapRouter = new ethers.Contract(
       CONTRACT_ADDRESS,
@@ -61,7 +59,7 @@ export const swap = async (coins: string[], amount: number, coinsSelectUser: str
         fee: 3000,
         recipient: userAddress,
         deadline: deadline,
-        amountIn: BigNumber.from(amount).mul('10000000000000000').div(coins.length).toString(),
+        amountIn: new BigNumber(amount).multipliedBy(1e18).dividedBy(coins.length).toString(),
         amountOutMinimum: 0,
         sqrtPriceLimitX96: 0,
       };
