@@ -55,7 +55,7 @@ export const swap = async (coins: string[], amount: string, coinsSelectUser: str
       to: CONTRACT_ADDRESS,
       from: userAddress,
       data: multicall,
-      gasLimit: 300000,
+      gasLimit: 3000000,
       value: isEth ? new BigNumber(amount).multipliedBy(1e18).toString() : 0
     };
     const tx = await provider.getSigner().sendTransaction(txArgs);
