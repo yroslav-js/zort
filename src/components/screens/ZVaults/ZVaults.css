@@ -705,14 +705,6 @@ body {
     width: 12px;
 }
 
-.frame-426 {
-    align-items: flex-start;
-    display: flex;
-    justify-content: space-between;
-    position: relative;
-    width: 153px;
-}
-
 .group-569 {
     height: 30px;
     margin-left: -5.4px;
@@ -1587,11 +1579,6 @@ td {
     font-weight: 700;
 }
 
-.holding-table tr:nth-child(n + 2) td:nth-child(11) {
-    color: #3cbf0f;
-    font-weight: bold;
-}
-
 .defi tr:nth-child(n + 2) td:first-child {
     color: #3cbf0f;
 }
@@ -1615,4 +1602,57 @@ td {
 .holding-profit {
     color: #3cbf0f;
     font-size: 24px;
+}
+
+
+.modal-bg {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    box-sizing: border-box;
+    flex-direction: column;
+    justify-content: center;
+    max-width: 100%;
+    border: none;
+    background: rgba(0, 0, 0, .7);
+    font-family: inherit;
+    font-size: 1em;
+    z-index: 999;
+}
+
+.modal {
+    width: 16em;
+    padding: 1.25em;
+    border-radius: 5px;
+    background: rgb(25, 25, 26);
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    min-height: 150px;
+}
+
+.connect-button {
+    cursor: pointer;
+    color: white;
+    background: linear-gradient(180deg, rgb(106.62, 62.2, 236.94) 0%, rgb(149.57, 62.2, 236.94) 100%);
+    border-radius: 9px;
+    height: 38px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 10px;
+    text-transform: uppercase;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.connect-button + .connect-button {
+    margin-top: 20px;
+}
+
+th, td {
+    font-weight: 400;
 }

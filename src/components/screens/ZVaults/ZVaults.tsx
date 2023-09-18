@@ -21,7 +21,7 @@ const ZVaults = () => {
       <div className="modal-bg" style={{display: isModalOpen ? 'block' : 'none'}} onClick={() => setIsModalOpen(false)}>
         <div className="modal" onClick={e => e.stopPropagation()}>
           {connectors.map(connector => (
-            <div className="modal-button" key={connector.name} onClick={() => {
+            <div className="connect-button" key={connector.name} onClick={() => {
               setIsModalOpen(false)
               connect({connector})
             }}>{connector.name}</div>
@@ -64,44 +64,304 @@ const ZVaults = () => {
                   <th>1m</th>
                   <th>3m</th>
                   <th>MCap</th>
+                  <th>FDV</th>
                   <th>24h volume</th>
                   <th>Category</th>
                   <th>Performance</th>
+                  <th>Bullishperiod</th>
                   <th>Twitter performance</th>
                   <th>AI Score</th>
                   <th>Allocation</th>
                 </tr>
                 <tr>
                   <td>OGN</td>
-                  <td>$0.08997</td>
-                  <td>347</td>
-                  <td>-0.81%</td>
-                  <td>18.31%</td>
-                  <td>-6.92%</td>
-                  <td>27.23%</td>
-                  <td>$50.05 M</td>
-                  <td>$34.79 M</td>
+                  <td>$0.0984</td>
+                  <td>330</td>
+                  <td>11.51%</td>
+                  <td>16.66%</td>
+                  <td>29.59%</td>
+                  <td>36.34%</td>
+                  <td>$55.03 M</td>
+                  <td>$98.40 M</td>
+                  <td>$34.03 M</td>
                   <td>Ethereum Ecosystem</td>
                   <td>Bullish</td>
+                  <td>13 /100</td>
                   <td>1608</td>
-                  <td>0.12</td>
+                  <td>0.13</td>
                   <td>0.2</td>
                 </tr>
                 <tr>
                   <td>OAX</td>
-                  <td>$0.1594</td>
-                  <td>880</td>
-                  <td>4.77%</td>
-                  <td>23.58%</td>
-                  <td>5.96%</td>
-                  <td>2.22%</td>
-                  <td>$8.97 M</td>
-                  <td>$53.83 M</td>
+                  <td>$0.177</td>
+                  <td>855</td>
+                  <td>15.92%</td>
+                  <td>8.03%</td>
+                  <td>59.80%</td>
+                  <td>11.58%</td>
+                  <td>$9.85 M</td>
+                  <td>$17.65 M</td>
+                  <td>$17.51 M</td>
                   <td>Ethereum Ecosystem</td>
                   <td>Bullish</td>
+                  <td>21 /100</td>
                   <td>342</td>
-                  <td>0.19</td>
+                  <td>0.21</td>
                   <td>0.2</td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div className="holding-tables">
+          <div className="holding-table-box">
+            <h3 className="holding-title"> DeFi <span className="holding-profit">6</span>
+            </h3>
+            <div className="holding-table defi">
+              <table>
+                <tr className="holdings-table-title">
+                  <th>Asset Name</th>
+                  <th>Price</th>
+                  <th>#</th>
+                  <th>24h</th>
+                  <th>7d</th>
+                  <th>1m</th>
+                  <th>3m</th>
+                  <th>MCap</th>
+                  <th>FDV</th>
+                  <th>24h volume</th>
+                  <th>Category</th>
+                  <th>Performance</th>
+                  <th>Bullishperiod</th>
+                  <th>Twitter performance</th>
+                  <th>AI Score</th>
+                  <th>Allocation</th>
+                </tr>
+                <tr>
+                  <td>INJ</td>
+                  <td>$7.41</td>
+                  <td>59</td>
+                  <td>4.08%</td>
+                  <td>13.94%</td>
+                  <td>-3.56%</td>
+                  <td>20.87%</td>
+                  <td>$620.63 M</td>
+                  <td>$741.00 M</td>
+                  <td>$14.45 M</td>
+                  <td>DeFi</td>
+                  <td>Bullish</td>
+                  <td>14 /100</td>
+                  <td>1114</td>
+                  <td>0.14</td>
+                  <td>3.4</td>
+                </tr>
+                <tr>
+                  <td>PENDLE</td>
+                  <td>$0.6159</td>
+                  <td>184</td>
+                  <td>0.87%</td>
+                  <td>11.12%</td>
+                  <td>13.89%</td>
+                  <td>16.86%</td>
+                  <td>$144.54 M</td>
+                  <td>$159.18 M</td>
+                  <td>$5.72 M</td>
+                  <td>DeFi</td>
+                  <td>Bullish</td>
+                  <td>27 /100</td>
+                  <td>985</td>
+                  <td>0.27</td>
+                  <td>3.4</td>
+                </tr>
+                <tr>
+                  <td>TRU</td>
+                  <td>$0.0376</td>
+                  <td>398</td>
+                  <td>4.51%</td>
+                  <td>24.93%</td>
+                  <td>27.69%</td>
+                  <td>-2.34%</td>
+                  <td>$40.13 M</td>
+                  <td>$45.06 M</td>
+                  <td>$4.35 M</td>
+                  <td>DeFi</td>
+                  <td>Bullish</td>
+                  <td>25 /100</td>
+                  <td>1011</td>
+                  <td>0.25</td>
+                  <td>3.4</td>
+                </tr>
+                <tr>
+                  <td>BICO</td>
+                  <td>$0.2081</td>
+                  <td>192</td>
+                  <td>1.63%</td>
+                  <td>7.98%</td>
+                  <td>-2.74%</td>
+                  <td>-9.78%</td>
+                  <td>$136.85 M</td>
+                  <td>$208.10 M</td>
+                  <td>$1.35 M</td>
+                  <td>DeFi</td>
+                  <td>Bullish</td>
+                  <td>14 /100</td>
+                  <td>962</td>
+                  <td>0.14</td>
+                  <td>3.4</td>
+                </tr>
+                <tr>
+                  <td>LQTY</td>
+                  <td>$0.823</td>
+                  <td>266</td>
+                  <td>1.04%</td>
+                  <td>8.39%</td>
+                  <td>2.82%</td>
+                  <td>-2.30%</td>
+                  <td>$76.77 M</td>
+                  <td>$82.15 M</td>
+                  <td>$8.22 M</td>
+                  <td>DeFi</td>
+                  <td>Bullish</td>
+                  <td>13 /100</td>
+                  <td>1319</td>
+                  <td>0.13</td>
+                  <td>3.4</td>
+                </tr>
+                <tr>
+                  <td>LEVER</td>
+                  <td>$0.001387</td>
+                  <td>446</td>
+                  <td>1.69%</td>
+                  <td>11.10%</td>
+                  <td>28.23%</td>
+                  <td>16.81%</td>
+                  <td>$33.74 M</td>
+                  <td>$49.00 M</td>
+                  <td>$8.98 M</td>
+                  <td>DeFi</td>
+                  <td>Bullish</td>
+                  <td>21 /100</td>
+                  <td>121</td>
+                  <td>0.21</td>
+                  <td>3.4</td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div className="holding-tables">
+          <div className="holding-table-box">
+            <h3 className="holding-title"> Oracle <span className="holding-profit">5</span>
+            </h3>
+            <div className="holding-table defi">
+              <table>
+                <tr className="holdings-table-title">
+                  <th>Asset Name</th>
+                  <th>Price</th>
+                  <th>#</th>
+                  <th>24h</th>
+                  <th>7d</th>
+                  <th>1m</th>
+                  <th>3m</th>
+                  <th>MCap</th>
+                  <th>FDV</th>
+                  <th>24h volume</th>
+                  <th>Category</th>
+                  <th>Performance</th>
+                  <th>Bullishperiod</th>
+                  <th>Twitter performance</th>
+                  <th>AI Score</th>
+                  <th>Allocation</th>
+                </tr>
+                <tr>
+                  <td>LINK</td>
+                  <td>$6.74</td>
+                  <td>18</td>
+                  <td>8.03%</td>
+                  <td>13.93%</td>
+                  <td>7.83%</td>
+                  <td>28.45%</td>
+                  <td>$3.75 B</td>
+                  <td>$6.74 B</td>
+                  <td>$183.08 M</td>
+                  <td>Oracle</td>
+                  <td>Bullish</td>
+                  <td>13 /100</td>
+                  <td>2129</td>
+                  <td>0.13</td>
+                  <td>0.5</td>
+                </tr>
+                <tr>
+                  <td>API3</td>
+                  <td>$1.07</td>
+                  <td>234</td>
+                  <td>-0.05%</td>
+                  <td>6.52%</td>
+                  <td>12.25%</td>
+                  <td>12.79%</td>
+                  <td>$93.16 M</td>
+                  <td>$135.10 M</td>
+                  <td>$4.21 M</td>
+                  <td>Oracle</td>
+                  <td>Bullish</td>
+                  <td>14 /100</td>
+                  <td>926</td>
+                  <td>0.14</td>
+                  <td>0.5</td>
+                </tr>
+                <tr>
+                  <td>BAND</td>
+                  <td>$1.07</td>
+                  <td>185</td>
+                  <td>3.67%</td>
+                  <td>8.43%</td>
+                  <td>7.97%</td>
+                  <td>-6.69%</td>
+                  <td>$143.73 M</td>
+                  <td>$148.45 M</td>
+                  <td>$4.13 M</td>
+                  <td>Oracle</td>
+                  <td>Bullish</td>
+                  <td>14 /100</td>
+                  <td>989</td>
+                  <td>0.14</td>
+                  <td>0.5</td>
+                </tr>
+                <tr>
+                  <td>CTSI</td>
+                  <td>$0.1288</td>
+                  <td>227</td>
+                  <td>0.41%</td>
+                  <td>7.88%</td>
+                  <td>6.02%</td>
+                  <td>0.70%</td>
+                  <td>$95.79 M</td>
+                  <td>$129.00 M</td>
+                  <td>$2.65 M</td>
+                  <td>Oracle</td>
+                  <td>Bullish</td>
+                  <td>17 /100</td>
+                  <td>630</td>
+                  <td>0.17</td>
+                  <td>0.5</td>
+                </tr>
+                <tr>
+                  <td>TRB</td>
+                  <td>$29.36</td>
+                  <td>272</td>
+                  <td>-24.57%</td>
+                  <td>23.21%</td>
+                  <td>192.84%</td>
+                  <td>226.04%</td>
+                  <td>$74.46 M</td>
+                  <td>$74.78 M</td>
+                  <td>$127.62 M</td>
+                  <td>Oracle</td>
+                  <td>Bullish</td>
+                  <td>29 /100</td>
+                  <td>755</td>
+                  <td>0.29</td>
+                  <td>0.5</td>
                 </tr>
               </table>
             </div>
@@ -122,344 +382,51 @@ const ZVaults = () => {
                   <th>1m</th>
                   <th>3m</th>
                   <th>MCap</th>
+                  <th>FDV</th>
                   <th>24h volume</th>
                   <th>Category</th>
                   <th>Performance</th>
+                  <th>Bullishperiod</th>
                   <th>Twitter performance</th>
                   <th>AI Score</th>
                   <th>Allocation</th>
                 </tr>
                 <tr>
-                  <td>RARI</td>
-                  <td>$0.9938</td>
-                  <td>787</td>
-                  <td>11.87%</td>
-                  <td>9.06%</td>
-                  <td>-2.28%</td>
-                  <td>-1.55%</td>
-                  <td>$11.51 M</td>
-                  <td>$561,445.26</td>
+                  <td>RARE</td>
+                  <td>$0.062803</td>
+                  <td>479</td>
+                  <td>3.03%</td>
+                  <td>8.24%</td>
+                  <td>4.96%</td>
+                  <td>-4.80%</td>
+                  <td>$29.61 M</td>
+                  <td>$62.60 M</td>
+                  <td>$808,567.53</td>
                   <td>NFT</td>
                   <td>Bullish</td>
-                  <td>64</td>
+                  <td>11 /100</td>
+                  <td>3404</td>
                   <td>0.11</td>
                   <td>0.2</td>
                 </tr>
+
                 <tr>
-                  <td>BOSON</td>
-                  <td>$0.1465</td>
-                  <td>666</td>
-                  <td>16.79%</td>
-                  <td>11.98%</td>
-                  <td>20.16%</td>
-                  <td>-6.10%</td>
-                  <td>$15.71 M</td>
-                  <td>$275,225.55</td>
+                  <td>DEGO</td>
+                  <td>$1.36</td>
+                  <td>969</td>
+                  <td>1.28%</td>
+                  <td>7.96%</td>
+                  <td>1.35%</td>
+                  <td>-1.39%</td>
+                  <td>$7.39 M</td>
+                  <td>$16.29 M</td>
+                  <td>$1.71 M</td>
                   <td>NFT</td>
                   <td>Bullish</td>
-                  <td>1058</td>
-                  <td>0.12</td>
+                  <td>10 /100</td>
+                  <td>540</td>
+                  <td>0.1</td>
                   <td>0.2</td>
-                </tr>
-              </table>
-            </div>
-          </div>
-        </div>
-        <div className="holding-tables">
-          <div className="holding-table-box">
-            <h3 className="holding-title"> IDO <span className="holding-profit">2</span>
-            </h3>
-            <div className="holding-table defi">
-              <table>
-                <tr className="holdings-table-title">
-                  <th>Asset Name</th>
-                  <th>Price</th>
-                  <th>#</th>
-                  <th>24h</th>
-                  <th>7d</th>
-                  <th>1m</th>
-                  <th>3m</th>
-                  <th>MCap</th>
-                  <th>24h volume</th>
-                  <th>Category</th>
-                  <th>Performance</th>
-                  <th>Twitter performance</th>
-                  <th>AI Score</th>
-                  <th>Allocation</th>
-                </tr>
-                <tr>
-                  <td>BBANK</td>
-                  <td>$0.0194</td>
-                  <td>953</td>
-                  <td>10.38%</td>
-                  <td>13.12%</td>
-                  <td>93.09%</td>
-                  <td>633.02%</td>
-                  <td>$7.40 M</td>
-                  <td>$368,697.58</td>
-                  <td>Ignition IDO</td>
-                  <td>Bullish</td>
-                  <td>412</td>
-                  <td>0.3</td>
-                  <td>0.2</td>
-                </tr>
-                <tr>
-                  <td>CAPS</td>
-                  <td>$0.0164</td>
-                  <td>561</td>
-                  <td>8.19%</td>
-                  <td>21.95%</td>
-                  <td>12.03%</td>
-                  <td>14.91%</td>
-                  <td>$22.01 M</td>
-                  <td>$462,801.71</td>
-                  <td>Ignition IDO</td>
-                  <td>Bullish</td>
-                  <td>448</td>
-                  <td>0.15</td>
-                  <td>0.2</td>
-                </tr>
-              </table>
-            </div>
-          </div>
-        </div>
-        <div className="holding-tables">
-          <div className="holding-table-box">
-            <h3 className="holding-title"> DeFi <span className="holding-profit">3</span>
-            </h3>
-            <div className="holding-table defi">
-              <table>
-                <tr className="holdings-table-title">
-                  <th>Asset Name</th>
-                  <th>Price</th>
-                  <th>#</th>
-                  <th>24h</th>
-                  <th>7d</th>
-                  <th>1m</th>
-                  <th>3m</th>
-                  <th>MCap</th>
-                  <th>24h volume</th>
-                  <th>Category</th>
-                  <th>Performance</th>
-                  <th>Twitter performance</th>
-                  <th>AI Score</th>
-                  <th>Allocation</th>
-                </tr>
-                <tr>
-                  <td>TENET</td>
-                  <td>$0.1558</td>
-                  <td>603</td>
-                  <td>7.48%</td>
-                  <td>8.88%</td>
-                  <td>41.80%</td>
-                  <td>28.16%</td>
-                  <td>$18.51 M</td>
-                  <td>$1.66 M</td>
-                  <td>DeFi</td>
-                  <td>Bullish</td>
-                  <td>511</td>
-                  <td>0.23</td>
-                  <td>0.3</td>
-                </tr>
-                <tr>
-                  <td>DFI</td>
-                  <td>$0.3372</td>
-                  <td>118</td>
-                  <td>2.93%</td>
-                  <td>9.61%</td>
-                  <td>21.87%</td>
-                  <td>2.28%</td>
-                  <td>$251.62 M</td>
-                  <td>$16.87 M</td>
-                  <td>DeFi</td>
-                  <td>Bullish</td>
-                  <td>455</td>
-                  <td>0.1</td>
-                  <td>0.3</td>
-                </tr>
-                <tr>
-                  <td>XVS</td>
-                  <td>$4.30</td>
-                  <td>279</td>
-                  <td>1.20%</td>
-                  <td>19.57%</td>
-                  <td>-0.31%</td>
-                  <td>26.11%</td>
-                  <td>$66.88 M</td>
-                  <td>$10.05 M</td>
-                  <td>DeFi</td>
-                  <td>Bullish</td>
-                  <td>742</td>
-                  <td>0.12</td>
-                  <td>0.3</td>
-                </tr>
-              </table>
-            </div>
-          </div>
-        </div>
-        <div className="holding-tables">
-          <div className="holding-table-box">
-            <h3 className="holding-title"> Polkadot Ecosystem <span className="holding-profit">1</span>
-            </h3>
-            <div className="holding-table defi">
-              <table>
-                <tr className="holdings-table-title">
-                  <th>Asset Name</th>
-                  <th>Price</th>
-                  <th>#</th>
-                  <th>24h</th>
-                  <th>7d</th>
-                  <th>1m</th>
-                  <th>3m</th>
-                  <th>MCap</th>
-                  <th>24h volume</th>
-                  <th>Category</th>
-                  <th>Performance</th>
-                  <th>Twitter performance</th>
-                  <th>AI Score</th>
-                  <th>Allocation</th>
-                </tr>
-                <tr>
-                  <td>PHA</td>
-                  <td>$0.093969</td>
-                  <td>313</td>
-                  <td>8.76%</td>
-                  <td>6.17%</td>
-                  <td>3.46%</td>
-                  <td>-0.08%</td>
-                  <td>$57.06 M</td>
-                  <td>$10.71 M</td>
-                  <td>Polkadot Ecosystem</td>
-                  <td>Bullish</td>
-                  <td>706</td>
-                  <td>0.15</td>
-                  <td>0.1</td>
-                </tr>
-              </table>
-            </div>
-          </div>
-        </div>
-        <div className="holding-tables">
-          <div className="holding-table-box">
-            <h3 className="holding-title"> Oracle <span className="holding-profit">1</span>
-            </h3>
-            <div className="holding-table defi">
-              <table>
-                <tr className="holdings-table-title">
-                  <th>Asset Name</th>
-                  <th>Price</th>
-                  <th>#</th>
-                  <th>24h</th>
-                  <th>7d</th>
-                  <th>1m</th>
-                  <th>3m</th>
-                  <th>MCap</th>
-                  <th>24h volume</th>
-                  <th>Category</th>
-                  <th>Performance</th>
-                  <th>Twitter performance</th>
-                  <th>AI Score</th>
-                  <th>Allocation</th>
-                </tr>
-                <tr>
-                  <td>TRB</td>
-                  <td>$26.22</td>
-                  <td>283</td>
-                  <td>12.06%</td>
-                  <td>59.33%</td>
-                  <td>126.93%</td>
-                  <td>195.43%</td>
-                  <td>$65.98 M</td>
-                  <td>$29.86 M</td>
-                  <td>Oracle</td>
-                  <td>Bullish</td>
-                  <td>755</td>
-                  <td>0.26</td>
-                  <td>0.1</td>
-                </tr>
-              </table>
-            </div>
-          </div>
-        </div>
-        <div className="holding-tables">
-          <div className="holding-table-box">
-            <h3 className="holding-title"> Web 3.0 <span className="holding-profit">1</span>
-            </h3>
-            <div className="holding-table defi">
-              <table>
-                <tr className="holdings-table-title">
-                  <th>Asset Name</th>
-                  <th>Price</th>
-                  <th>#</th>
-                  <th>24h</th>
-                  <th>7d</th>
-                  <th>1m</th>
-                  <th>3m</th>
-                  <th>MCap</th>
-                  <th>24h volume</th>
-                  <th>Category</th>
-                  <th>Performance</th>
-                  <th>Twitter performance</th>
-                  <th>AI Score</th>
-                  <th>Allocation</th>
-                </tr>
-                <tr>
-                  <td>PRIME</td>
-                  <td>$4.20</td>
-                  <td>208</td>
-                  <td>4.15%</td>
-                  <td>23.86%</td>
-                  <td>50.53%</td>
-                  <td>184.41%</td>
-                  <td>$109.60 M</td>
-                  <td>$2.43 M</td>
-                  <td>Web 3.0</td>
-                  <td>Bullish</td>
-                  <td>748</td>
-                  <td>0.27</td>
-                  <td>0.1</td>
-                </tr>
-              </table>
-            </div>
-          </div>
-        </div>
-        <div className="holding-tables">
-          <div className="holding-table-box">
-            <h3 className="holding-title"> Wallet <span className="holding-profit">1</span>
-            </h3>
-            <div className="holding-table defi">
-              <table>
-                <tr className="holdings-table-title">
-                  <th>Asset Name</th>
-                  <th>Price</th>
-                  <th>#</th>
-                  <th>24h</th>
-                  <th>7d</th>
-                  <th>1m</th>
-                  <th>3m</th>
-                  <th>MCap</th>
-                  <th>24h volume</th>
-                  <th>Category</th>
-                  <th>Performance</th>
-                  <th>Twitter performance</th>
-                  <th>AI Score</th>
-                  <th>Allocation</th>
-                </tr>
-                <tr>
-                  <td>MTL</td>
-                  <td>$1.33</td>
-                  <td>233</td>
-                  <td>2.99%</td>
-                  <td>15.38%</td>
-                  <td>1.95%</td>
-                  <td>29.95%</td>
-                  <td>$88.96 M</td>
-                  <td>$15.67 M</td>
-                  <td>Wallet</td>
-                  <td>Bullish</td>
-                  <td>741</td>
-                  <td>0.23</td>
-                  <td>0.1</td>
                 </tr>
               </table>
             </div>
@@ -480,28 +447,32 @@ const ZVaults = () => {
                   <th>1m</th>
                   <th>3m</th>
                   <th>MCap</th>
+                  <th>FDV</th>
                   <th>24h volume</th>
                   <th>Category</th>
                   <th>Performance</th>
+                  <th>Bullishperiod</th>
                   <th>Twitter performance</th>
                   <th>AI Score</th>
                   <th>Allocation</th>
                 </tr>
                 <tr>
                   <td>SPELL</td>
-                  <td>$0.00052133</td>
-                  <td>331</td>
-                  <td>32.12%</td>
-                  <td>28.94%</td>
-                  <td>5.14%</td>
-                  <td>16.18%</td>
-                  <td>$53.92 M</td>
-                  <td>$56.22 M</td>
+                  <td>$0.00047953</td>
+                  <td>346</td>
+                  <td>1.47%</td>
+                  <td>26.82%</td>
+                  <td>24.43%</td>
+                  <td>8.62%</td>
+                  <td>$51.77 M</td>
+                  <td>$94.48 M</td>
+                  <td>$5.48 M</td>
                   <td>Yield Farming</td>
                   <td>Bullish</td>
+                  <td>11 /100</td>
                   <td>1289</td>
-                  <td>0.08</td>
-                  <td>0.1</td>
+                  <td>0.11</td>
+                  <td>0.2</td>
                 </tr>
               </table>
             </div>
@@ -509,7 +480,7 @@ const ZVaults = () => {
         </div>
         <div className="holding-tables">
           <div className="holding-table-box">
-            <h3 className="holding-title"> Fan Token <span className="holding-profit">1</span>
+            <h3 className="holding-title"> Gaming <span className="holding-profit">2</span>
             </h3>
             <div className="holding-table defi">
               <table>
@@ -522,28 +493,50 @@ const ZVaults = () => {
                   <th>1m</th>
                   <th>3m</th>
                   <th>MCap</th>
+                  <th>FDV</th>
                   <th>24h volume</th>
                   <th>Category</th>
                   <th>Performance</th>
+                  <th>Bullishperiod</th>
                   <th>Twitter performance</th>
                   <th>AI Score</th>
                   <th>Allocation</th>
                 </tr>
                 <tr>
-                  <td>OG</td>
-                  <td>$4.54</td>
-                  <td>632</td>
-                  <td>0.56%</td>
-                  <td>5.70%</td>
-                  <td>21.58%</td>
-                  <td>-1.91%</td>
-                  <td>$17.49 M</td>
-                  <td>$18.96 M</td>
-                  <td>Fan Token</td>
+                  <td>TLM</td>
+                  <td>$0.01007</td>
+                  <td>422</td>
+                  <td>-0.30%</td>
+                  <td>5.38%</td>
+                  <td>0.14%</td>
+                  <td>-3.93%</td>
+                  <td>$36.81 M</td>
+                  <td>$61.27 M</td>
+                  <td>$3.80 M</td>
+                  <td>Gaming</td>
                   <td>Bullish</td>
-                  <td>462</td>
+                  <td>13 /100</td>
+                  <td>814</td>
                   <td>0.13</td>
-                  <td>0.1</td>
+                  <td>0.2</td>
+                </tr>
+                <tr>
+                  <td>HELLO</td>
+                  <td>$0.0437</td>
+                  <td>560</td>
+                  <td>1.99%</td>
+                  <td>5.51%</td>
+                  <td>0.76%</td>
+                  <td>27.23%</td>
+                  <td>$23.22 M</td>
+                  <td>$43.70 M</td>
+                  <td>$902,272.08</td>
+                  <td>Gaming</td>
+                  <td>Bullish</td>
+                  <td>21 /100</td>
+                  <td>451</td>
+                  <td>0.21</td>
+                  <td>0.2</td>
                 </tr>
               </table>
             </div>

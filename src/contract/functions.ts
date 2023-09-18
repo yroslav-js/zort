@@ -1,33 +1,12 @@
-import {BigNumber as BigNumberEthers, ethers} from "ethers";
+import {ethers} from "ethers";
 import abi from "@/contract/abi";
 import {CONTRACT_ADDRESS} from "@/contract/config";
 import BigNumber from "bignumber.js";
 
 
-export const swap = async (coins: string[], amount: string, coinsSelectUser: string, userAddress: string): Promise<any> => {
+export const swap = async (coins: string[], amount: string, coinsSelectUser: string, userAddress: string, isEth: boolean): Promise<any> => {
   try {
-    // const coinsSelectUser = '0xC886F960B1433F913a7cC59dC06f04A25678dd2A';
-    // coins = [
-    //   // '0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984',
-    //   // '0xB4FBF271143F4FBf7B91A5ded31805e42b2208d6',
-    //   '0x326C977E6efc84E512bB9C30f76E30c160eD06FB',
-    // ];
-
-    interface IParams {
-      tokenIn: string;
-      tokenOut: string;
-      fee: number;
-      recipient: string;
-      deadline: string | Date;
-      amountIn: string | BigNumberEthers;
-      amountOutMinimum: number;
-      sqrtPriceLimitX96: number;
-    }
-
-    //balanceof
-
     let abiToken = ["function approve(address _spender, uint256 _value) public returns (bool success)"]
-
 
     const getContract = () => {
       const provider = new ethers.providers.Web3Provider(window.ethereum)
@@ -35,12 +14,10 @@ export const swap = async (coins: string[], amount: string, coinsSelectUser: str
       return contract.connect(provider.getSigner())
     }
 
-    console.log(amount)
-    // console.log(BigNumberEthers.from(amount))
-    // console.log(BigNumberEthers.from(amount * 10 ** 18))
-
-    const t = await getContract().approve(CONTRACT_ADDRESS, new BigNumber(amount).multipliedBy(1e18).toString())
-    await t.wait()
+    if (!isEth) {
+      const transaction = await getContract().approve(CONTRACT_ADDRESS, new BigNumber(amount).multipliedBy(1e18).toString())
+      await transaction.wait()
+    }
 
     const swapRouter = new ethers.Contract(
       CONTRACT_ADDRESS,
@@ -70,31 +47,21 @@ export const swap = async (coins: string[], amount: string, coinsSelectUser: str
       res.push(encData);
     }
 
-    const getSwapContract = () => {
-      const provider = new ethers.providers.Web3Provider(window.ethereum)
-      const contract = new ethers.Contract(CONTRACT_ADDRESS, abi, provider);
-      return contract.connect(provider.getSigner())
-    }
-
-    // getSwapContract.exactInputSingle({})
-
-
     const multicall = swapRouter.interface.encodeFunctionData('multicall', [
       res,
     ]);
 
     const txArgs = {
-      //env
-      to: '0xE592427A0AEce92De3Edee1F18E0157C05861564',
+      to: CONTRACT_ADDRESS,
       from: userAddress,
       data: multicall,
-      gasLimit: 300000
+      gasLimit: 300000,
+      value: isEth ? new BigNumber(amount).multipliedBy(1e18).toString() : 0
     };
     const tx = await provider.getSigner().sendTransaction(txArgs);
-    console.log(tx)
-    const receipt = await tx.wait()
-    console.log('receipt', receipt)
+    await tx.wait()
   } catch (e) {
     console.log(e)
   }
 }
+

@@ -1,6 +1,6 @@
 "use client"
 
-import {configureChains, createConfig, WagmiConfig} from 'wagmi';
+import {configureChains, createConfig, mainnet, WagmiConfig} from 'wagmi';
 import {
   goerli
 } from 'wagmi/chains';
@@ -9,7 +9,7 @@ import {ReactNode} from "react";
 import {WalletConnectConnector} from "@wagmi/connectors/walletConnect";
 import {MetaMaskConnector} from "@wagmi/connectors/metaMask";
 
-const chains = [goerli]
+const chains = [mainnet]
 const projectId = '076b09ffd10c89c5ba6f6be50cfa13b2'
 
 const {publicClient} = configureChains(chains, [w3mProvider({projectId})])

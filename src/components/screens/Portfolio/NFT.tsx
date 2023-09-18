@@ -1,37 +1,17 @@
 "use client"
 
-import "../ZVaults/ZVaults.css"
+import "./ZVaults.css"
 import Link from "next/link";
-import {useAccount, useConnect, useContractWrite, useNetwork, useSwitchNetwork, useWaitForTransaction} from "wagmi";
+import {useAccount, useConnect, useNetwork, useSwitchNetwork} from "wagmi";
 import {useEffect, useState} from "react";
 import {chainId} from "@/contract/web3";
 
-const Portfolio = () => {
+const ZVaults = () => {
   const {isConnected} = useAccount()
   const {connect, connectors} = useConnect()
   const [isModalOpen, setIsModalOpen] = useState(false)
   const {chain} = useNetwork()
   const {switchNetwork} = useSwitchNetwork()
-
-  // const {data: hashData, write: approve, isError: err1} = useContractWrite({
-  //   address: '',
-  //   abi: {},
-  //   functionName: 'approve',
-  //   args: [],
-  //   chainId: 97
-  // })
-  //
-  // const {isSuccess: isFinish, data: d, isError: err4} = useWaitForTransaction({
-  //   hash: hashData?.hash,
-  // })
-  //
-  // const {data, isLoading, write, isError: err2} = useContractWrite({
-  //   address: '',
-  //   abi: {},
-  //   functionName: '',
-  //   args: [],
-  //   chainId: 97
-  // })
 
   useEffect(() => {
     if (isConnected && chain?.id !== chainId) switchNetwork?.(chainId)
@@ -41,7 +21,7 @@ const Portfolio = () => {
       <div className="modal-bg" style={{display: isModalOpen ? 'block' : 'none'}} onClick={() => setIsModalOpen(false)}>
         <div className="modal" onClick={e => e.stopPropagation()}>
           {connectors.map(connector => (
-            <div className="modal-button" key={connector.name} onClick={() => {
+            <div className="connect-button" key={connector.name} onClick={() => {
               setIsModalOpen(false)
               connect({connector})
             }}>{connector.name}</div>
@@ -84,50 +64,56 @@ const Portfolio = () => {
                   <th>1m</th>
                   <th>3m</th>
                   <th>MCap</th>
+                  <th>FDV</th>
                   <th>24h volume</th>
                   <th>Category</th>
                   <th>Performance</th>
+                  <th>Bullishperiod</th>
                   <th>Twitter performance</th>
                   <th>AI Score</th>
                   <th>Allocation</th>
                 </tr>
                 <tr>
-                  <td>RARI</td>
-                  <td>$0.9938</td>
-                  <td>787</td>
-                  <td>11.87%</td>
-                  <td>9.06%</td>
-                  <td>-2.28%</td>
-                  <td>-1.55%</td>
-                  <td>$11.51 M</td>
-                  <td>$561,445.26</td>
+                  <td>RARE</td>
+                  <td>$0.062803</td>
+                  <td>479</td>
+                  <td>3.03%</td>
+                  <td>8.24%</td>
+                  <td>4.96%</td>
+                  <td>-4.80%</td>
+                  <td>$29.61 M</td>
+                  <td>$62.60 M</td>
+                  <td>$808,567.53</td>
                   <td>NFT</td>
                   <td>Bullish</td>
-                  <td>64</td>
+                  <td>11 /100</td>
+                  <td>3404</td>
                   <td>0.11</td>
                   <td>0.2</td>
                 </tr>
+
                 <tr>
-                  <td>BOSON</td>
-                  <td>$0.1465</td>
-                  <td>666</td>
-                  <td>16.79%</td>
-                  <td>11.98%</td>
-                  <td>20.16%</td>
-                  <td>-6.10%</td>
-                  <td>$15.71 M</td>
-                  <td>$275,225.55</td>
+                  <td>DEGO</td>
+                  <td>$1.36</td>
+                  <td>969</td>
+                  <td>1.28%</td>
+                  <td>7.96%</td>
+                  <td>1.35%</td>
+                  <td>-1.39%</td>
+                  <td>$7.39 M</td>
+                  <td>$16.29 M</td>
+                  <td>$1.71 M</td>
                   <td>NFT</td>
                   <td>Bullish</td>
-                  <td>1058</td>
-                  <td>0.12</td>
+                  <td>10 /100</td>
+                  <td>540</td>
+                  <td>0.1</td>
                   <td>0.2</td>
                 </tr>
               </table>
             </div>
           </div>
         </div>
-
         <div className="group-627">
           <p className="zort-inc-2023-all-rights-reserved inter-normal-quick-silver-10px"> © ZORT Inc. 2023. Last
             update <span
@@ -145,4 +131,4 @@ const Portfolio = () => {
   );
 };
 
-export default Portfolio;
+export default ZVaults;
