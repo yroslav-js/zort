@@ -1,12 +1,12 @@
 "use client"
 
-import "../ZVaults/ZVaults.css"
-import Link from "next/link";
 import {useAccount, useConnect, useNetwork, useSwitchNetwork} from "wagmi";
+import "../ZVaults/ZVaults.css"
 import {useEffect, useState} from "react";
 import {chainId} from "@/contract/web3";
+import Link from "next/link";
 
-const ZVaults = () => {
+const Gaming = () => {
   const {isConnected} = useAccount()
   const {connect, connectors} = useConnect()
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -51,7 +51,7 @@ const ZVaults = () => {
         </div>
         <div className="holding-tables">
           <div className="holding-table-box">
-            <h3 className="holding-title"> NFT <span className="holding-profit">2</span>
+            <h3 className="holding-title"> Gaming <span className="holding-profit">2</span>
             </h3>
             <div className="holding-table defi">
               <table>
@@ -74,40 +74,39 @@ const ZVaults = () => {
                   <th>Allocation</th>
                 </tr>
                 <tr>
-                  <td>RARE</td>
-                  <td>$0.062803</td>
-                  <td>479</td>
-                  <td>3.03%</td>
-                  <td>8.24%</td>
-                  <td>4.96%</td>
-                  <td>-4.80%</td>
-                  <td>$29.61 M</td>
-                  <td>$62.60 M</td>
-                  <td>$808,567.53</td>
-                  <td>NFT</td>
+                  <td>TLM</td>
+                  <td>$0.01007</td>
+                  <td>422</td>
+                  <td>-0.30%</td>
+                  <td>5.38%</td>
+                  <td>0.14%</td>
+                  <td>-3.93%</td>
+                  <td>$36.81 M</td>
+                  <td>$61.27 M</td>
+                  <td>$3.80 M</td>
+                  <td>Gaming</td>
                   <td>Bullish</td>
-                  <td>11 /100</td>
-                  <td>3404</td>
-                  <td>0.11</td>
+                  <td>13 /100</td>
+                  <td>814</td>
+                  <td>0.13</td>
                   <td>0.2</td>
                 </tr>
-
                 <tr>
-                  <td>DEGO</td>
-                  <td>$1.36</td>
-                  <td>969</td>
-                  <td>1.28%</td>
-                  <td>7.96%</td>
-                  <td>1.35%</td>
-                  <td>-1.39%</td>
-                  <td>$7.39 M</td>
-                  <td>$16.29 M</td>
-                  <td>$1.71 M</td>
-                  <td>NFT</td>
+                  <td>HELLO</td>
+                  <td>$0.0437</td>
+                  <td>560</td>
+                  <td>1.99%</td>
+                  <td>5.51%</td>
+                  <td>0.76%</td>
+                  <td>27.23%</td>
+                  <td>$23.22 M</td>
+                  <td>$43.70 M</td>
+                  <td>$902,272.08</td>
+                  <td>Gaming</td>
                   <td>Bullish</td>
-                  <td>10 /100</td>
-                  <td>540</td>
-                  <td>0.1</td>
+                  <td>21 /100</td>
+                  <td>451</td>
+                  <td>0.21</td>
                   <td>0.2</td>
                 </tr>
               </table>
@@ -131,4 +130,4 @@ const ZVaults = () => {
   );
 };
 
-export default ZVaults;
+export default Gaming;

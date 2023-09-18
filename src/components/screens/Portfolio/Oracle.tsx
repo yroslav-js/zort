@@ -1,12 +1,12 @@
 "use client"
 
+import {useEffect, useState} from 'react';
 import "../ZVaults/ZVaults.css"
-import Link from "next/link";
 import {useAccount, useConnect, useNetwork, useSwitchNetwork} from "wagmi";
-import {useEffect, useState} from "react";
 import {chainId} from "@/contract/web3";
+import Link from "next/link";
 
-const ZVaults = () => {
+const Oracle = () => {
   const {isConnected} = useAccount()
   const {connect, connectors} = useConnect()
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -51,7 +51,7 @@ const ZVaults = () => {
         </div>
         <div className="holding-tables">
           <div className="holding-table-box">
-            <h3 className="holding-title"> NFT <span className="holding-profit">2</span>
+            <h3 className="holding-title"> Oracle <span className="holding-profit">5</span>
             </h3>
             <div className="holding-table defi">
               <table>
@@ -74,41 +74,94 @@ const ZVaults = () => {
                   <th>Allocation</th>
                 </tr>
                 <tr>
-                  <td>RARE</td>
-                  <td>$0.062803</td>
-                  <td>479</td>
-                  <td>3.03%</td>
-                  <td>8.24%</td>
-                  <td>4.96%</td>
-                  <td>-4.80%</td>
-                  <td>$29.61 M</td>
-                  <td>$62.60 M</td>
-                  <td>$808,567.53</td>
-                  <td>NFT</td>
+                  <td>LINK</td>
+                  <td>$6.74</td>
+                  <td>18</td>
+                  <td>8.03%</td>
+                  <td>13.93%</td>
+                  <td>7.83%</td>
+                  <td>28.45%</td>
+                  <td>$3.75 B</td>
+                  <td>$6.74 B</td>
+                  <td>$183.08 M</td>
+                  <td>Oracle</td>
                   <td>Bullish</td>
-                  <td>11 /100</td>
-                  <td>3404</td>
-                  <td>0.11</td>
-                  <td>0.2</td>
+                  <td>13 /100</td>
+                  <td>2129</td>
+                  <td>0.13</td>
+                  <td>0.5</td>
                 </tr>
-
                 <tr>
-                  <td>DEGO</td>
-                  <td>$1.36</td>
-                  <td>969</td>
-                  <td>1.28%</td>
-                  <td>7.96%</td>
-                  <td>1.35%</td>
-                  <td>-1.39%</td>
-                  <td>$7.39 M</td>
-                  <td>$16.29 M</td>
-                  <td>$1.71 M</td>
-                  <td>NFT</td>
+                  <td>API3</td>
+                  <td>$1.07</td>
+                  <td>234</td>
+                  <td>-0.05%</td>
+                  <td>6.52%</td>
+                  <td>12.25%</td>
+                  <td>12.79%</td>
+                  <td>$93.16 M</td>
+                  <td>$135.10 M</td>
+                  <td>$4.21 M</td>
+                  <td>Oracle</td>
                   <td>Bullish</td>
-                  <td>10 /100</td>
-                  <td>540</td>
-                  <td>0.1</td>
-                  <td>0.2</td>
+                  <td>14 /100</td>
+                  <td>926</td>
+                  <td>0.14</td>
+                  <td>0.5</td>
+                </tr>
+                <tr>
+                  <td>BAND</td>
+                  <td>$1.07</td>
+                  <td>185</td>
+                  <td>3.67%</td>
+                  <td>8.43%</td>
+                  <td>7.97%</td>
+                  <td>-6.69%</td>
+                  <td>$143.73 M</td>
+                  <td>$148.45 M</td>
+                  <td>$4.13 M</td>
+                  <td>Oracle</td>
+                  <td>Bullish</td>
+                  <td>14 /100</td>
+                  <td>989</td>
+                  <td>0.14</td>
+                  <td>0.5</td>
+                </tr>
+                <tr>
+                  <td>CTSI</td>
+                  <td>$0.1288</td>
+                  <td>227</td>
+                  <td>0.41%</td>
+                  <td>7.88%</td>
+                  <td>6.02%</td>
+                  <td>0.70%</td>
+                  <td>$95.79 M</td>
+                  <td>$129.00 M</td>
+                  <td>$2.65 M</td>
+                  <td>Oracle</td>
+                  <td>Bullish</td>
+                  <td>17 /100</td>
+                  <td>630</td>
+                  <td>0.17</td>
+                  <td>0.5</td>
+                </tr>
+                <tr>
+                  <td>TRB</td>
+                  <td>$29.36</td>
+                  <td>272</td>
+                  <td>-24.57%</td>
+                  <td>23.21%</td>
+                  <td>192.84%</td>
+                  <td>226.04%</td>
+                  <td>$74.46 M</td>
+                  <td>$74.78 M</td>
+                  <td>$127.62 M</td>
+                  <td>Oracle</td>
+                  <td>Bullish</td>
+                  <td>29 /100</td>
+                  <td>755</td>
+                  <td>0.29</td>
+                  <td>0.5</td>
                 </tr>
               </table>
             </div>
@@ -131,4 +184,4 @@ const ZVaults = () => {
   );
 };
 
-export default ZVaults;
+export default Oracle;

@@ -15,7 +15,7 @@ export const swap = async (coins: string[], amount: string, coinsSelectUser: str
     }
 
     if (!isEth) {
-      const transaction = await getContract().approve(CONTRACT_ADDRESS, new BigNumber(amount).multipliedBy(1e18).toString())
+      const transaction = await getContract().approve(CONTRACT_ADDRESS, new BigNumber(amount).multipliedBy(1e6).toString())
       await transaction.wait()
     }
 
@@ -36,7 +36,7 @@ export const swap = async (coins: string[], amount: string, coinsSelectUser: str
         fee: 3000,
         recipient: userAddress,
         deadline: deadline,
-        amountIn: new BigNumber(amount).multipliedBy(1e18).dividedBy(coins.length).toString(),
+        amountIn: new BigNumber(amount).multipliedBy(isEth ? 1e18 : 1e6).dividedBy(coins.length).toString(),
         amountOutMinimum: 0,
         sqrtPriceLimitX96: 0,
       };

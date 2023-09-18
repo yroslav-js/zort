@@ -1,17 +1,19 @@
+import {CONTRACT_ADDRESS, USDC_CONTRACT_ADDRESS, USDT_CONTRACT_ADDRESS} from "@/contract/config";
+
 export default [
   {
-    name: 'weth',
-    address: '0xB4FBF271143F4FBf7B91A5ded31805e42b2208d6',
-    icon: '/img/eth.svg',
-  },
-  {
     name: 'eth',
-    address: '0xB4FBF271143F4FBf7B91A5ded31805e42b2208d6',
+    address: CONTRACT_ADDRESS,
     icon: '/img/eth.svg',
   },
   {
     name: 'usdt',
-    address: '0xB4FBF271143F4FBf7B91A5ded31805e42b2208d6',
+    address: USDT_CONTRACT_ADDRESS,
     icon: '/img/usdt.svg',
-  }
+  },
+  {
+    name: 'usdc',
+    address: USDC_CONTRACT_ADDRESS,
+    icon: '/img/usdc.svg',
+  },
 ]

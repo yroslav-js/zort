@@ -3,13 +3,14 @@
 import './Main.css'
 import {useAccount, useBalance, useConnect, useNetwork, useSwitchNetwork} from "wagmi";
 import {useEffect, useState} from "react";
-import {chainId, getContract} from "@/contract/web3";
+import {chainId, getCoinContract} from "@/contract/web3";
 import {Modal} from "antd";
 import userSelectToken from "@/data/userSelectToken";
 import {portfolios} from "@/data/portfolios";
 import {swap} from "@/contract/functions";
 import Link from "next/link";
 import {AnimatePresence, motion} from 'framer-motion'
+import {USDC_CONTRACT_ADDRESS, USDT_CONTRACT_ADDRESS} from "@/contract/config";
 
 const Main = () => {
   const {isConnected, address} = useAccount()
@@ -25,13 +26,11 @@ const Main = () => {
   const [transactionLoading, setTransactionLoading] = useState(false)
   const {chain} = useNetwork()
   const {switchNetwork} = useSwitchNetwork()
-  const [balanceWETH, setBalanceWETH] = useState(0)
-  // const [balanceUSDT, setBalanceUSDT] = useState(0)
+  const [balanceUSDT, setBalanceUSDT] = useState(0)
+  const [balanceUSDC, setBalanceUSDC] = useState(0)
   const [isEth, setIsEth] = useState(false)
   const [filter, setFilter] = useState('ALL')
   const {data} = useBalance({address})
-
-  console.log(data)
 
   useEffect(() => {
     if (selectedToken === 1) setIsEth(true)
@@ -43,7 +42,9 @@ const Main = () => {
   }, [isConnected])
 
   useEffect(() => {
-    getContract().balanceOf(address).then((data: any) => setBalanceWETH(Number(data) / 10 ** 18)).catch(() => {
+    getCoinContract(USDT_CONTRACT_ADDRESS).balanceOf(address).then((data: any) => setBalanceUSDT(Number(data) / 10 ** 6)).catch(() => {
+    })
+    getCoinContract(USDC_CONTRACT_ADDRESS).balanceOf(address).then((data: any) => setBalanceUSDC(Number(data) / 10 ** 6)).catch(() => {
     })
   }, [transactionLoading])
 
@@ -117,14 +118,16 @@ const Main = () => {
               </div>
               {selectedToken === 0 &&
                 <div className='balance'
-                     style={balanceWETH < Number(amount) ? {color: "red"} : {}}>balance: {balanceWETH.toFixed(5) || 0}</div>
+                     style={Number(data?.formatted) < Number(amount) ? {color: "red"} : {}}>balance: {Number(data?.formatted || 0).toFixed(5)}</div>
               }
               {selectedToken === 1 &&
                 <div className='balance'
-                     style={Number(data?.formatted) < Number(amount) ? {color: "red"} : {}}>balance: {Number(data?.formatted || 0).toFixed(5)}</div>
+                     style={balanceUSDT < Number(amount) ? {color: "red"} : {}}>balance: {balanceUSDT.toFixed(5) || 0}</div>
               }
-              {/*<div className='balance'*/}
-              {/*     style={balanceWETH < Number(amount) ? {color: "red"} : {}}>balance: {balanceWETH}</div>*/}
+              {selectedToken === 2 &&
+                <div className='balance'
+                     style={balanceUSDC < Number(amount) ? {color: "red"} : {}}>balance: {balanceUSDC.toFixed(5) || 0}</div>
+              }
               <div className="footer-modal">
                 <div className="token-wrapper">
                   {portfolios.find(p => p.portfolio === portfolio)?.investmentCoins.map(token => (
@@ -148,9 +151,9 @@ const Main = () => {
                          return
                        }
                        if (chain?.id !== chainId) return switchNetwork?.(chainId)
-                       if (balanceWETH < Number(amount) && selectedToken === 0) return
+                       if (balanceUSDT < Number(amount) && selectedToken === 0) return
                        if (Number(data?.formatted) < Number(amount) && selectedToken === 1) return
-                       // if (balanceWETH < Number(amount)) return
+                       // if (balanceUSDT < Number(amount)) return
                        if (Number(amount) > 0) {
                          setTransactionLoading(true)
                          await swap(
@@ -262,9 +265,9 @@ const Main = () => {
                         <div className="flex-col-5 flex-col-12">
                           <div className="flex-row flex">
                             <div className="flex-col flex">
-                              <div className="fourth-link-1 inter-semi-bold-white-16px">
+                              <Link href='/NFT' className="fourth-link-1 inter-semi-bold-white-16px">
                                 NFT
-                              </div>
+                              </Link>
                               <div className="group-5">
                                 <div className="frame-564">
                                   <div className="ellipse-21-2 ellipse-21-6"></div>
@@ -352,9 +355,9 @@ const Main = () => {
                         <div className="flex-col-6 flex-col-12">
                           <div className="flex-row flex">
                             <div className="flex-col flex">
-                              <div className="fourth-link-1 inter-semi-bold-white-16px">
+                              <Link href="/YieldFarming" className="fourth-link-1 inter-semi-bold-white-16px">
                                 Yield Farming
-                              </div>
+                              </Link>
                               <div className="group-5">
                                 <div className="frame-564-1 frame-564-4">
                                   <div className="ellipse-21-1 ellipse-21-6"></div>
@@ -441,9 +444,9 @@ const Main = () => {
                                         className="mix defi flex-col-2 flex-col-12">
                         <div className="flex-row flex">
                           <div className="flex-col flex">
-                            <div className="fourth-link-1 inter-semi-bold-white-16px">
+                            <Link href="Defi" className="fourth-link-1 inter-semi-bold-white-16px">
                               Defi
-                            </div>
+                            </Link>
                             <div className="group-5">
                               <div className="frame-564-1 frame-564-4">
                                 <div className="ellipse-21-1 ellipse-21-6"></div>
@@ -522,9 +525,9 @@ const Main = () => {
                                         className="mix meme flex-col-2 flex-col-12">
                         <div className="flex-row-1">
                           <div className="flex-col-3 flex-col-12">
-                            <div className="fourth-link-1 inter-semi-bold-white-16px">
+                            <Link href="EthereumEcosystem" className="fourth-link-1 inter-semi-bold-white-16px">
                               Ethereum Ecosystem
-                            </div>
+                            </Link>
                             <div className="group-573">
                               <div className="frame-564-2 frame-564-4">
                                 <div className="ellipse-21"></div>
@@ -601,9 +604,9 @@ const Main = () => {
                                         className="mix meme flex-col-8 flex-col-12">
                         <div className="flex-row-1">
                           <div className="flex-col-3 flex-col-12">
-                            <div className="fourth-link-1 inter-semi-bold-white-16px">
+                            <Link href="/Oracle" className="fourth-link-1 inter-semi-bold-white-16px">
                               Oracle
-                            </div>
+                            </Link>
                             <div className="group-573">
                               <div className="frame-564-2 frame-564-4">
                                 <div className="ellipse-21"></div>
@@ -670,9 +673,9 @@ const Main = () => {
                                         className="mix emerging flex-col-9 flex-col-12">
                         <div className="flex-row flex">
                           <div className="flex-col flex">
-                            <div className="fourth-link-1 inter-semi-bold-white-16px">
+                            <Link href="/Gaming" className="fourth-link-1 inter-semi-bold-white-16px">
                               Gaming
-                            </div>
+                            </Link>
                             <div className="group-5">
                               <div className="frame-567">
                                 <div className="ellipse-21-5 ellipse-21-6"></div>

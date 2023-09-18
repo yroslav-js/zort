@@ -1,10 +1,7 @@
 "use client"
 
 import {configureChains, createConfig, mainnet, WagmiConfig} from 'wagmi';
-import {
-  goerli
-} from 'wagmi/chains';
-import {EthereumClient, w3mProvider} from "@web3modal/ethereum";
+import {w3mProvider} from "@web3modal/ethereum";
 import {ReactNode} from "react";
 import {WalletConnectConnector} from "@wagmi/connectors/walletConnect";
 import {MetaMaskConnector} from "@wagmi/connectors/metaMask";
@@ -30,7 +27,6 @@ const wagmiConfig = createConfig({
   ],
   publicClient
 })
-const ethereumClient = new EthereumClient(wagmiConfig, chains)
 
 export function WagmiAppConfig({children}: { children: ReactNode }) {
   return (

@@ -1,12 +1,12 @@
 "use client"
 
-import "../ZVaults/ZVaults.css"
-import Link from "next/link";
 import {useAccount, useConnect, useNetwork, useSwitchNetwork} from "wagmi";
+import "../ZVaults/ZVaults.css"
 import {useEffect, useState} from "react";
 import {chainId} from "@/contract/web3";
+import Link from "next/link";
 
-const ZVaults = () => {
+const YieldFarming = () => {
   const {isConnected} = useAccount()
   const {connect, connectors} = useConnect()
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -51,7 +51,7 @@ const ZVaults = () => {
         </div>
         <div className="holding-tables">
           <div className="holding-table-box">
-            <h3 className="holding-title"> NFT <span className="holding-profit">2</span>
+            <h3 className="holding-title"> Yield Farming <span className="holding-profit">1</span>
             </h3>
             <div className="holding-table defi">
               <table>
@@ -74,40 +74,21 @@ const ZVaults = () => {
                   <th>Allocation</th>
                 </tr>
                 <tr>
-                  <td>RARE</td>
-                  <td>$0.062803</td>
-                  <td>479</td>
-                  <td>3.03%</td>
-                  <td>8.24%</td>
-                  <td>4.96%</td>
-                  <td>-4.80%</td>
-                  <td>$29.61 M</td>
-                  <td>$62.60 M</td>
-                  <td>$808,567.53</td>
-                  <td>NFT</td>
+                  <td>SPELL</td>
+                  <td>$0.00047953</td>
+                  <td>346</td>
+                  <td>1.47%</td>
+                  <td>26.82%</td>
+                  <td>24.43%</td>
+                  <td>8.62%</td>
+                  <td>$51.77 M</td>
+                  <td>$94.48 M</td>
+                  <td>$5.48 M</td>
+                  <td>Yield Farming</td>
                   <td>Bullish</td>
                   <td>11 /100</td>
-                  <td>3404</td>
+                  <td>1289</td>
                   <td>0.11</td>
-                  <td>0.2</td>
-                </tr>
-
-                <tr>
-                  <td>DEGO</td>
-                  <td>$1.36</td>
-                  <td>969</td>
-                  <td>1.28%</td>
-                  <td>7.96%</td>
-                  <td>1.35%</td>
-                  <td>-1.39%</td>
-                  <td>$7.39 M</td>
-                  <td>$16.29 M</td>
-                  <td>$1.71 M</td>
-                  <td>NFT</td>
-                  <td>Bullish</td>
-                  <td>10 /100</td>
-                  <td>540</td>
-                  <td>0.1</td>
                   <td>0.2</td>
                 </tr>
               </table>
@@ -131,4 +112,4 @@ const ZVaults = () => {
   );
 };
 
-export default ZVaults;
+export default YieldFarming;
