@@ -151,7 +151,6 @@ const Main = () => {
                          return
                        }
                        if (chain?.id !== chainId) return switchNetwork?.(chainId)
-                       if (balanceUSDT < Number(amount) && selectedToken === 0) return
                        if (Number(data?.formatted) < Number(amount) && selectedToken === 0) return
                        if (Number(balanceUSDT) < Number(amount) && selectedToken === 1) return
                        if (Number(balanceUSDC) < Number(amount) && selectedToken === 2) return
