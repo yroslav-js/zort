@@ -485,7 +485,8 @@
 .home-u47-zero-state .group-556 {
     align-items: flex-start;
     display: flex;
-    gap: 415px;
+    /*gap: 415px;*/
+    gap: 530px;
     min-width: 860px;
 }
 
@@ -498,7 +499,8 @@
 .home-u47-zero-state .group-552 {
     align-items: center;
     display: flex;
-    min-width: 378px;
+    /*min-width: 378px;*/
+    min-width: 152px;
 }
 
 .home-u47-zero-state .overlap-group-3 {
@@ -2295,6 +2297,6 @@ button {
 .balance {
     color: white;
     font-size: 12px;
-    margin-top: 5px;
+    margin-top: 10px;
     margin-left: 5px;
 }

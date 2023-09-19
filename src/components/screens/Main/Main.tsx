@@ -190,8 +190,8 @@ const Main = () => {
                   <Link href='/' className="fourth-link-13">Home</Link>
                 </div>
                 <div className="fourth-link-14"><Link href="/zvaults">ZVaults</Link></div>
-                <div className="fourth-link-15 not-now">Analytics</div>
-                <div className="fourth-link-16 not-now">Settings</div>
+                {/*<div className="fourth-link-15 not-now">Analytics</div>*/}
+                {/*<div className="fourth-link-16 not-now">Settings</div>*/}
               </div>
             </div>
             <div className="group-705">
@@ -750,122 +750,122 @@ const Main = () => {
               </AnimatePresence>
             </motion.div>
           </div>
-          <div className="flex-row-6">
-            <div className="flex-col-10 flex-col-12">
-              <div className="fourth-link-20 inter-semi-bold-white-22px">
-                Crypto News
-              </div>
-              <div className="overlap-group19">
-                <p className="fourth-link-21 inter-semi-bold-white-16px">
-                  FTX-Linked Wallet Moves $10 Million in Altcoins Ahead of
-                  Bankruptcy Hearing
-                </p>
-                <p className="fourth-link-22">
-                  Bankrupt crypto exchange FTX’s Solana wallet has moved $10
-                  million in altocoins to Ethereum network through the Wormhole
-                  bridge in the last 4 days, sparking fears of more token dumps in
-                  the market. Read on to learn more.
-                </p>
-                <div className="flex-row-7">
-                  <div className="frame-58">
-                    <div className="fourth-link-10 inter-medium-celeste-10px">
-                      BLOCKCHAIN NEWS
-                    </div>
-                  </div>
-                  <div className="fourth-link-11 inter-normal-quick-silver-10px">
-                    Posted 42 minutes ago
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="overlap-group-container-4">
-              <div className="overlap-group1">
-                <p className="fourth-link-12 inter-semi-bold-white-16px">
-                  Chinese Bank Uses Digital Yuan Giveaway to Promote Waste
-                  Recycling Drive
-                </p>
-                <div className="flex-row-2">
-                  <div className="frame-58">
-                    <div className="fourth-link-10 inter-medium-celeste-10px">
-                      ALTCOIN NEWS
-                    </div>
-                  </div>
-                  <div className="fourth-link-11 inter-normal-quick-silver-10px">
-                    Posted 42 minutes ago
-                  </div>
-                </div>
-              </div>
-              <div className="overlap-group1">
-                <p className="fourth-link-12 inter-semi-bold-white-16px">
-                  FTX Financial Filing Reveals Yacht Purchase for Former Co-CEO
-                  Sam Trabucco
-                </p>
-                <div className="flex-row-8">
-                  <div className="frame-58">
-                    <div className="fourth-link-10 inter-medium-celeste-10px">
-                      BLOCKCHAIN NEWS
-                    </div>
-                  </div>
-                  <div className="fourth-link-11 inter-normal-quick-silver-10px">
-                    Posted 42 minutes ago
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="flex-col-11 flex-col-12">
-              <div className="frame-5-1">
-                <div className="fourth-link-9 inter-semi-bold-white-12px">
-                  View All
-                </div>
-              </div>
-              <div className="overlap-group15">
-                <p className="fourth-link-12 inter-semi-bold-white-16px">
-                  Ripple Objects to SEC&#39;s Appeal of Ruling on Crypto as
-                  Non-Security
-                </p>
-                <div className="flex-row-2">
-                  <div className="frame-58">
-                    <div className="fourth-link-10 inter-medium-celeste-10px">
-                      ALTCOIN NEWS
-                    </div>
-                  </div>
-                  <div className="fourth-link-11 inter-normal-quick-silver-10px">
-                    Posted 42 minutes ago
-                  </div>
-                </div>
-              </div>
-              <div className="overlap-group17">
-                <p className="fourth-link-12 inter-semi-bold-white-16px">
-                  Bitcoin Price Prediction as Bulls Hold $25,800 Level – Here are
-                  Key Levels to Watch
-                </p>
-                <div className="flex-row-9">
-                  <div className="frame-58">
-                    <div className="fourth-link-10 inter-medium-celeste-10px">
-                      PRICE PREDICTIONS
-                    </div>
-                  </div>
-                  <div className="fourth-link-11 inter-normal-quick-silver-10px">
-                    Posted 42 minutes ago
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="flex-row-10">
-            <p
-              className="zort-inc-2023-all-rights-reserved inter-normal-quick-silver-10px"
-            >
-              © ZORT Inc. 2023 All rights reserved.
-            </p>
-            <div className="frame-604 inter-normal-white-10px">
-              <div className="frame-604-item">News</div>
-              <div className="ellipse"></div>
-              <div className="frame-604-item">Terms and Conditions</div>
-              <div className="ellipse"></div>
-              <div className="frame-604-item">Privacy Policy</div>
-            </div>
-          </div>
+          {/*<div className="flex-row-6">*/}
+          {/*  <div className="flex-col-10 flex-col-12">*/}
+          {/*    <div className="fourth-link-20 inter-semi-bold-white-22px">*/}
+          {/*      Crypto News*/}
+          {/*    </div>*/}
+          {/*    <div className="overlap-group19">*/}
+          {/*      <p className="fourth-link-21 inter-semi-bold-white-16px">*/}
+          {/*        FTX-Linked Wallet Moves $10 Million in Altcoins Ahead of*/}
+          {/*        Bankruptcy Hearing*/}
+          {/*      </p>*/}
+          {/*      <p className="fourth-link-22">*/}
+          {/*        Bankrupt crypto exchange FTX’s Solana wallet has moved $10*/}
+          {/*        million in altocoins to Ethereum network through the Wormhole*/}
+          {/*        bridge in the last 4 days, sparking fears of more token dumps in*/}
+          {/*        the market. Read on to learn more.*/}
+          {/*      </p>*/}
+          {/*      <div className="flex-row-7">*/}
+          {/*        <div className="frame-58">*/}
+          {/*          <div className="fourth-link-10 inter-medium-celeste-10px">*/}
+          {/*            BLOCKCHAIN NEWS*/}
+          {/*          </div>*/}
+          {/*        </div>*/}
+          {/*        <div className="fourth-link-11 inter-normal-quick-silver-10px">*/}
+          {/*          Posted 42 minutes ago*/}
+          {/*        </div>*/}
+          {/*      </div>*/}
+          {/*    </div>*/}
+          {/*  </div>*/}
+          {/*  <div className="overlap-group-container-4">*/}
+          {/*    <div className="overlap-group1">*/}
+          {/*      <p className="fourth-link-12 inter-semi-bold-white-16px">*/}
+          {/*        Chinese Bank Uses Digital Yuan Giveaway to Promote Waste*/}
+          {/*        Recycling Drive*/}
+          {/*      </p>*/}
+          {/*      <div className="flex-row-2">*/}
+          {/*        <div className="frame-58">*/}
+          {/*          <div className="fourth-link-10 inter-medium-celeste-10px">*/}
+          {/*            ALTCOIN NEWS*/}
+          {/*          </div>*/}
+          {/*        </div>*/}
+          {/*        <div className="fourth-link-11 inter-normal-quick-silver-10px">*/}
+          {/*          Posted 42 minutes ago*/}
+          {/*        </div>*/}
+          {/*      </div>*/}
+          {/*    </div>*/}
+          {/*    <div className="overlap-group1">*/}
+          {/*      <p className="fourth-link-12 inter-semi-bold-white-16px">*/}
+          {/*        FTX Financial Filing Reveals Yacht Purchase for Former Co-CEO*/}
+          {/*        Sam Trabucco*/}
+          {/*      </p>*/}
+          {/*      <div className="flex-row-8">*/}
+          {/*        <div className="frame-58">*/}
+          {/*          <div className="fourth-link-10 inter-medium-celeste-10px">*/}
+          {/*            BLOCKCHAIN NEWS*/}
+          {/*          </div>*/}
+          {/*        </div>*/}
+          {/*        <div className="fourth-link-11 inter-normal-quick-silver-10px">*/}
+          {/*          Posted 42 minutes ago*/}
+          {/*        </div>*/}
+          {/*      </div>*/}
+          {/*    </div>*/}
+          {/*  </div>*/}
+          {/*  <div className="flex-col-11 flex-col-12">*/}
+          {/*    <div className="frame-5-1">*/}
+          {/*      <div className="fourth-link-9 inter-semi-bold-white-12px">*/}
+          {/*        View All*/}
+          {/*      </div>*/}
+          {/*    </div>*/}
+          {/*    <div className="overlap-group15">*/}
+          {/*      <p className="fourth-link-12 inter-semi-bold-white-16px">*/}
+          {/*        Ripple Objects to SEC&#39;s Appeal of Ruling on Crypto as*/}
+          {/*        Non-Security*/}
+          {/*      </p>*/}
+          {/*      <div className="flex-row-2">*/}
+          {/*        <div className="frame-58">*/}
+          {/*          <div className="fourth-link-10 inter-medium-celeste-10px">*/}
+          {/*            ALTCOIN NEWS*/}
+          {/*          </div>*/}
+          {/*        </div>*/}
+          {/*        <div className="fourth-link-11 inter-normal-quick-silver-10px">*/}
+          {/*          Posted 42 minutes ago*/}
+          {/*        </div>*/}
+          {/*      </div>*/}
+          {/*    </div>*/}
+          {/*    <div className="overlap-group17">*/}
+          {/*      <p className="fourth-link-12 inter-semi-bold-white-16px">*/}
+          {/*        Bitcoin Price Prediction as Bulls Hold $25,800 Level – Here are*/}
+          {/*        Key Levels to Watch*/}
+          {/*      </p>*/}
+          {/*      <div className="flex-row-9">*/}
+          {/*        <div className="frame-58">*/}
+          {/*          <div className="fourth-link-10 inter-medium-celeste-10px">*/}
+          {/*            PRICE PREDICTIONS*/}
+          {/*          </div>*/}
+          {/*        </div>*/}
+          {/*        <div className="fourth-link-11 inter-normal-quick-silver-10px">*/}
+          {/*          Posted 42 minutes ago*/}
+          {/*        </div>*/}
+          {/*      </div>*/}
+          {/*    </div>*/}
+          {/*  </div>*/}
+          {/*</div>*/}
+          {/*<div className="flex-row-10">*/}
+          {/*  <p*/}
+          {/*    className="zort-inc-2023-all-rights-reserved inter-normal-quick-silver-10px"*/}
+          {/*  >*/}
+          {/*    © ZORT Inc. 2023 All rights reserved.*/}
+          {/*  </p>*/}
+          {/*  <div className="frame-604 inter-normal-white-10px">*/}
+          {/*    <div className="frame-604-item">News</div>*/}
+          {/*    <div className="ellipse"></div>*/}
+          {/*    <div className="frame-604-item">Terms and Conditions</div>*/}
+          {/*    <div className="ellipse"></div>*/}
+          {/*    <div className="frame-604-item">Privacy Policy</div>*/}
+          {/*  </div>*/}
+          {/*</div>*/}
         </div>
       </div>
     </>
