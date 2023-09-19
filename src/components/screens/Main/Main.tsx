@@ -42,9 +42,9 @@ const Main = () => {
   }, [isConnected])
 
   useEffect(() => {
-    getCoinContract(USDT_CONTRACT_ADDRESS).balanceOf(address).then((data: any) => setBalanceUSDT(Number(data) / 10 ** 6)).catch(() => {
+    getCoinContract(USDT_CONTRACT_ADDRESS)?.balanceOf(address).then((data: any) => setBalanceUSDT(Number(data) / 10 ** 6)).catch(() => {
     })
-    getCoinContract(USDC_CONTRACT_ADDRESS).balanceOf(address).then((data: any) => setBalanceUSDC(Number(data) / 10 ** 6)).catch(() => {
+    getCoinContract(USDC_CONTRACT_ADDRESS)?.balanceOf(address).then((data: any) => setBalanceUSDC(Number(data) / 10 ** 6)).catch(() => {
     })
   }, [transactionLoading])
 
