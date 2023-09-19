@@ -39,8 +39,8 @@ const Gaming = () => {
               <div className="overlap-group-3">
                 <div className="fourth-link-14">ZVaults</div>
               </div>
-              <div className="fourth-link-15 not-now">Analytics</div>
-              <div className="fourth-link-16 not-now">Settings</div>
+              {/*<div className="fourth-link-15 not-now">Analytics</div>*/}
+              {/*<div className="fourth-link-16 not-now">Settings</div>*/}
             </div>
           </div>
           <div className="group-705">

@@ -1359,7 +1359,8 @@ body {
 .holdings .group-556 {
     align-items: flex-start;
     display: flex;
-    gap: 434px;
+    /*gap: 434px;*/
+    gap: 530px;
     min-width: 860px;
 }
 
@@ -1372,7 +1373,7 @@ body {
 .holdings .group-552 {
     align-items: center;
     display: flex;
-    min-width: 378px;
+    min-width: 152px;
 }
 
 .holdings .overlap-group-3 {
