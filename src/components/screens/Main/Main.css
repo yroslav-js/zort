@@ -924,7 +924,7 @@
     gap: 7px;
     height: 53px;
     margin-left: 42px;
-    min-width: 120px;
+    min-width: 110px;
     padding: 15px 16px;
 }
 
@@ -938,7 +938,7 @@
     align-self: flex-end;
     letter-spacing: -0.1px;
     line-height: 22px;
-    min-width: 64px;
+    min-width: 55px;
     white-space: nowrap;
 }
 
@@ -2059,7 +2059,7 @@ button {
     gap: 7px;
     height: 53px;
     margin-left: 66px;
-    min-width: 120px;
+    min-width: 110px;
     padding: 15px 16px;
 }
 

@@ -162,7 +162,7 @@ const Main = () => {
                          setTransactionLoading(false)
                        }
                      }}>
-                  <img className="frame-27" alt="Frame" src="/img/frame-3.svg"/> Invest now
+                  <img className="frame-27" alt="Frame" src="/img/frame-3.svg"/> Join now
                 </div>
               </div>
             </div>
@@ -330,7 +330,7 @@ const Main = () => {
                                   alt="Frame"
                                 />
                                 <div className="fourth-link-6 inter-semi-bold-white-12px">
-                                  Invest Now
+                                  Join Now
                                 </div>
                               </div>
                             </div>
@@ -420,7 +420,7 @@ const Main = () => {
                                   alt="Frame"
                                 />
                                 <div className="fourth-link-6 inter-semi-bold-white-12px">
-                                  Invest Now
+                                  Join Now
                                 </div>
                               </div>
                             </div>
@@ -505,7 +505,7 @@ const Main = () => {
                             }}>
                               <img className="frame" src="/img/frame-6.svg" alt="Frame"/>
                               <div className="fourth-link-6 inter-semi-bold-white-12px">
-                                Invest Now
+                                Join Now
                               </div>
                             </div>
                           </div>
@@ -584,7 +584,7 @@ const Main = () => {
                             }}>
                               <img className="frame" src="/img/frame-4.svg" alt="Frame"/>
                               <div className="fourth-link-6 inter-semi-bold-white-12px">
-                                Invest Now
+                                Join Now
                               </div>
                             </div>
                           </div>
@@ -657,7 +657,7 @@ const Main = () => {
                             }}>
                               <img className="frame" src="/img/frame-3.svg" alt="Frame"/>
                               <div className="fourth-link-6 inter-semi-bold-white-12px">
-                                Invest Now
+                                Join Now
                               </div>
                             </div>
                           </div>
@@ -728,7 +728,7 @@ const Main = () => {
                             }}>
                               <img className="frame" src="/img/frame-8.svg" alt="Frame"/>
                               <div className="fourth-link-6 inter-semi-bold-white-12px">
-                                Invest Now
+                                Join Now
                               </div>
                             </div>
                           </div>
