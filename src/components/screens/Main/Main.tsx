@@ -104,8 +104,7 @@ const Main = () => {
             <div>
               <div className="input-wrapper">
                 <input
-                  className="modal-input" min={0} type="number"
-                  placeholder="investment" value={amount}
+                  className="modal-input" min={0} type="number" value={amount}
                   onChange={e => {
                     if (e.target.value.includes('-')) return
                     // const num = Math.floor(Number(e.target.value))
