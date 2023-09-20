@@ -42,9 +42,15 @@ const Main = () => {
   }, [isConnected])
 
   useEffect(() => {
-    getCoinContract(USDT_CONTRACT_ADDRESS)?.balanceOf(address).then((data: any) => setBalanceUSDT(Number(data) / 10 ** 6)).catch(() => {
+    console.log(getCoinContract(USDT_CONTRACT_ADDRESS))
+    getCoinContract(USDT_CONTRACT_ADDRESS)?.balanceOf(address).then((data: any) => {
+      console.log(data)
+      setBalanceUSDT(Number(data) / 10 ** 6)
+    }).catch((e: any) => {
+      console.log(e)
     })
-    getCoinContract(USDC_CONTRACT_ADDRESS)?.balanceOf(address).then((data: any) => setBalanceUSDC(Number(data) / 10 ** 6)).catch(() => {
+    getCoinContract(USDC_CONTRACT_ADDRESS)?.balanceOf(address).then((data: any) => setBalanceUSDC(Number(data) / 10 ** 6)).catch((e: any) => {
+      console.log(e)
     })
   }, [transactionLoading])
 
@@ -53,7 +59,7 @@ const Main = () => {
     return coins?.map((coin, i) => {
       if (i > 5) return null
       if (i === 5) return (
-        <div className="group-569">
+        <div className="group-569" key={coin.name}>
           <div className="overlap-group">
             <div className="text inter-semi-bold-black-10px">
               +{Number(coins.length) - 5}
