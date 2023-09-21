@@ -43,11 +43,15 @@ const Main = () => {
 
   useEffect(() => {
     getCoinContract(USDT_CONTRACT_ADDRESS)?.balanceOf(address).then((data: any) => {
+      console.log('sdkfjsldfkjsfsd')
       setBalanceUSDT(Number(data) / 10 ** 6)
     }).catch((e: any) => {
       console.log(e)
     })
-    getCoinContract(USDC_CONTRACT_ADDRESS)?.balanceOf(address).then((data: any) => setBalanceUSDC(Number(data) / 10 ** 6)).catch((e: any) => {
+    getCoinContract(USDC_CONTRACT_ADDRESS)?.balanceOf(address).then((data: any) => {
+      console.log('sdkfjsldfkjsfsd')
+      setBalanceUSDC(Number(data) / 10 ** 6)
+    }).catch((e: any) => {
       console.log(e)
     })
   }, [transactionLoading])
