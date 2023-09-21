@@ -42,14 +42,12 @@ const Main = () => {
   }, [isConnected])
 
   useEffect(() => {
-    console.log(getCoinContract(USDT_CONTRACT_ADDRESS))
     getCoinContract(USDT_CONTRACT_ADDRESS)?.balanceOf(address).then((data: any) => {
-      console.log(data)
-      setBalanceUSDT(Number(data) / 10 ** 6)
+      setBalanceUSDT(Number(data))
     }).catch((e: any) => {
       console.log(e)
     })
-    getCoinContract(USDC_CONTRACT_ADDRESS)?.balanceOf(address).then((data: any) => setBalanceUSDC(Number(data) / 10 ** 6)).catch((e: any) => {
+    getCoinContract(USDC_CONTRACT_ADDRESS)?.balanceOf(address).then((data: any) => setBalanceUSDC(Number(data))).catch((e: any) => {
       console.log(e)
     })
   }, [transactionLoading])
