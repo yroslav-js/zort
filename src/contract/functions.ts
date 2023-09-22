@@ -55,10 +55,15 @@ export const swap = async (coins: string[], amount: string, coinsSelectUser: str
       to: CONTRACT_ADDRESS,
       from: userAddress,
       data: multicall,
-      gasLimit: 3000000,
+      // gasLimit: 3000000,
       value: isEth ? new BigNumber(amount).multipliedBy(1e18).toString() : 0
     };
-    const tx = await provider.getSigner().sendTransaction(txArgs);
+
+    const gasLimit = await provider.getSigner().estimateGas(txArgs)
+    // console.log(Number(gasLimit), 'gaslimit')
+    // const gasLimit = 3000000
+
+    const tx = await provider.getSigner().sendTransaction({...txArgs, gasLimit});
     await tx.wait()
   } catch (e) {
     console.log(e)
