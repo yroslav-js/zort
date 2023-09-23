@@ -10,7 +10,8 @@ import {portfolios} from "@/data/portfolios";
 import {swap} from "@/contract/functions";
 import Link from "next/link";
 import {AnimatePresence, motion} from 'framer-motion'
-import {USDC_CONTRACT_ADDRESS, USDT_CONTRACT_ADDRESS} from "@/contract/config";
+import {CONTRACT_ADDRESS, USDC_CONTRACT_ADDRESS, USDT_CONTRACT_ADDRESS} from "@/contract/config";
+import BigNumber from "bignumber.js";
 
 const Main = () => {
   const {isConnected, address} = useAccount()
@@ -28,6 +29,8 @@ const Main = () => {
   const {switchNetwork} = useSwitchNetwork()
   const [balanceUSDT, setBalanceUSDT] = useState(0)
   const [balanceUSDC, setBalanceUSDC] = useState(0)
+  const [allowanceUSDT, setAllowanceUSDT] = useState(0)
+  const [allowanceUSDC, setAllowanceUSDC] = useState(0)
   const [isEth, setIsEth] = useState(false)
   const [filter, setFilter] = useState('ALL')
   const {data} = useBalance({address})
@@ -42,19 +45,25 @@ const Main = () => {
   }, [isConnected])
 
   useEffect(() => {
-    getCoinContract(USDT_CONTRACT_ADDRESS)?.balanceOf(address).then((data: any) => {
-      console.log('sdkfjsldfkjsfsd')
-      setBalanceUSDT(Number(data) / 10 ** 6)
-    }).catch((e: any) => {
-      console.log(e)
-    })
-    getCoinContract(USDC_CONTRACT_ADDRESS)?.balanceOf(address).then((data: any) => {
-      console.log('sdkfjsldfkjsfsd')
-      setBalanceUSDC(Number(data) / 10 ** 6)
-    }).catch((e: any) => {
-      console.log(e)
-    })
-  }, [transactionLoading])
+    const getCoinData = async () => {
+      try {
+        const usdt = await getCoinContract(USDT_CONTRACT_ADDRESS)?.balanceOf(address)
+        setBalanceUSDT(Number(usdt) / 10 ** 6)
+
+        const allowanceUSDT = await getCoinContract(USDT_CONTRACT_ADDRESS)?.allowance(address, CONTRACT_ADDRESS)
+        setAllowanceUSDT(Number(allowanceUSDT) / 10 ** 6)
+
+        const usdc = await getCoinContract(USDC_CONTRACT_ADDRESS)?.balanceOf(address)
+        setBalanceUSDC(Number(usdc) / 10 ** 6)
+
+        const allowanceUSDC = await getCoinContract(USDT_CONTRACT_ADDRESS)?.allowance(address, CONTRACT_ADDRESS)
+        setAllowanceUSDC(Number(allowanceUSDC) / 10 ** 6)
+      } catch (e) {
+      }
+    }
+
+    getCoinData()
+  }, [transactionLoading, address])
 
   const coinsImage = (portfolio: string) => {
     const coins = portfolios.find(p => p.portfolio === portfolio)?.investmentCoins
@@ -127,13 +136,23 @@ const Main = () => {
                 <div className='balance'
                      style={Number(data?.formatted) < Number(amount) ? {color: "red"} : {}}>balance: {Number(data?.formatted || 0).toFixed(5)}</div>
               }
-              {selectedToken === 1 &&
+              {selectedToken === 1 && (!allowanceUSDT || allowanceUSDT > balanceUSDT) &&
                 <div className='balance'
-                     style={balanceUSDT < Number(amount) ? {color: "red"} : {}}>balance: {balanceUSDT.toFixed(5) || 0}</div>
+                     style={balanceUSDT < Number(amount)
+                       ? {color: "red"} : {}}>balance: {balanceUSDT.toFixed(5) || 0}</div>
               }
-              {selectedToken === 2 &&
+
+              {selectedToken === 1 && allowanceUSDT && allowanceUSDT < balanceUSDT &&
+                <div className='balance'
+                     style={allowanceUSDT < Number(amount) ? {color: "red"} : {}}>allowance: {allowanceUSDT.toFixed(5) || 0}</div>
+              }
+              {selectedToken === 2 && (!allowanceUSDC || allowanceUSDC > balanceUSDC) &&
                 <div className='balance'
                      style={balanceUSDC < Number(amount) ? {color: "red"} : {}}>balance: {balanceUSDC.toFixed(5) || 0}</div>
+              }
+              {selectedToken === 1 && allowanceUSDC && allowanceUSDC < balanceUSDC &&
+                <div className='balance'
+                     style={allowanceUSDC < Number(amount) ? {color: "red"} : {}}>allowance: {allowanceUSDC.toFixed(5) || 0}</div>
               }
               <div className="footer-modal">
                 <div className="token-wrapper">
@@ -160,12 +179,18 @@ const Main = () => {
                        if (chain?.id !== chainId) return switchNetwork?.(chainId)
                        if (Number(data?.formatted) < Number(amount) && selectedToken === 0) return
                        if (Number(balanceUSDT) < Number(amount) && selectedToken === 1) return
+                       if (allowanceUSDT && allowanceUSDT < Number(amount) && selectedToken === 1) return
                        if (Number(balanceUSDC) < Number(amount) && selectedToken === 2) return
+                       if (allowanceUSDC && allowanceUSDC < Number(amount) && selectedToken === 2) return
+                       let isAllow = false
+                       if (selectedToken === 1 && allowanceUSDT > 0) isAllow = true
+                       if (selectedToken === 2 && allowanceUSDC > 0) isAllow = true
                        if (Number(amount) > 0) {
                          setTransactionLoading(true)
                          await swap(
                            portfolios.find(p => p.portfolio === portfolio)?.investmentCoins.map(token => token.address) || [''],
-                           amount, userSelectToken[selectedToken].address, address || '', isEth)
+                           // ['0xf17e65822b568b3903685a7c9f496cf7656cc6c2'],
+                           amount, userSelectToken[selectedToken].address, address || '', isEth, isAllow)
                          setTransactionLoading(false)
                        }
                      }}>
