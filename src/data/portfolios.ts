@@ -107,11 +107,6 @@ export const portfolios: IPortfolio[] = [
     portfolio: 'Entertainment',
     investmentCoins: [
       {
-        name: 'NAKA',
-        img: '/img/shiba.png',
-        address: '0x2e10348ee563dec5fe483de558d1946b7a3372c2'
-      },
-      {
         name: 'MC',
         img: '/img/mc.png',
         address: '0x949d48eca67b17269629c7194f4b727d4ef9e5d6'
