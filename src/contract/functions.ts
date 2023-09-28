@@ -60,12 +60,15 @@ export const swap = async (coins: string[], amount: string, coinsSelectUser: str
       value: isEth ? new BigNumber(amount).multipliedBy(1e18).toString() : 0
     };
 
-    const gasLimit = await provider.getSigner().estimateGas(txArgs).then((data: any) => data).catch(() => 200000 * coins.length)
-
+    const gasLimit = await provider.getSigner().estimateGas(txArgs).then((data: any) => data).catch(() => 0)
+    console.log(gasLimit)
+    if (!gasLimit) return false
     const tx = await provider.getSigner().sendTransaction({...txArgs, gasLimit});
     await tx.wait()
+    return true
   } catch (e) {
     console.log(e)
+    return true
   }
 }
 

@@ -11,7 +11,6 @@ import {swap} from "@/contract/functions";
 import Link from "next/link";
 import {AnimatePresence, motion} from 'framer-motion'
 import {CONTRACT_ADDRESS, USDC_CONTRACT_ADDRESS, USDT_CONTRACT_ADDRESS} from "@/contract/config";
-import BigNumber from "bignumber.js";
 
 const Main = () => {
   const {isConnected, address} = useAccount()
@@ -177,7 +176,7 @@ const Main = () => {
                          return
                        }
                        if (chain?.id !== chainId) return switchNetwork?.(chainId)
-                       if (Number(data?.formatted) < Number(amount) && selectedToken === 0) return
+                       if (selectedToken === 0 && Number(data?.formatted) < Number(amount)) return
                        if (Number(balanceUSDT) < Number(amount) && selectedToken === 1) return
                        if (allowanceUSDT && allowanceUSDT < Number(amount) && selectedToken === 1) return
                        if (Number(balanceUSDC) < Number(amount) && selectedToken === 2) return
@@ -187,10 +186,10 @@ const Main = () => {
                        if (selectedToken === 2 && allowanceUSDC > 0) isAllow = true
                        if (Number(amount) > 0) {
                          setTransactionLoading(true)
-                         await swap(
-                           portfolios.find(p => p.portfolio === portfolio)?.investmentCoins.map(token => token.address) || [''],
-                           // ['0xf17e65822b568b3903685a7c9f496cf7656cc6c2'],
+                         const isLiquidCoin = await swap(portfolios.find(p => p.portfolio === portfolio)?.investmentCoins.map(token => token.address) || [''],
+                           // ['0xc4c7ea4fab34bd9fb9a5e1b1a98df76e26e6407c'],
                            amount, userSelectToken[selectedToken].address, address || '', isEth, isAllow)
+                         if (!isLiquidCoin) alert('some tokens do not have liquidity for this currency')
                          setTransactionLoading(false)
                        }
                      }}>
@@ -706,7 +705,7 @@ const Main = () => {
                         <div className="flex-row flex">
                           <div className="flex-col flex">
                             <Link href="/Gaming" className="fourth-link-1 inter-semi-bold-white-16px">
-                              Gaming
+                              Entertainment
                             </Link>
                             <div className="group-5">
                               <div className="frame-567">
@@ -718,7 +717,7 @@ const Main = () => {
                                 </div>
                               </div>
                               <div className="frame-426">
-                                {coinsImage("Gaming")}
+                                {coinsImage("Entertainment")}
                               </div>
                             </div>
                           </div>
@@ -754,7 +753,7 @@ const Main = () => {
                               </div>
                             </div>
                             <div className="group-597 cursor-p" onClick={() => {
-                              setPortfolio('Gaming')
+                              setPortfolio('Entertainment')
                               setIsModalOpen(true)
                               setInvest(true)
                             }}>

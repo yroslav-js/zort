@@ -12,14 +12,14 @@ export const portfolios: IPortfolio[] = [
     portfolio: 'NFT',
     investmentCoins: [
       {
-        name: 'RARE',
-        img: '/img/rare.png',
-        address: '0xba5BDe662c17e2aDFF1075610382B9B691296350'
-      },
-      {
         name: 'GAL',
         img: '/img/gal.png',
         address: '0x5faa989af96af85384b8a938c2ede4a7378d9875'
+      },
+      {
+        name: 'LM',
+        img: '/img/balancer.png',
+        address: '0x7bec98609cb6378d6f995e8f8097ee78376fbec9'
       },
     ]
   },
@@ -32,9 +32,9 @@ export const portfolios: IPortfolio[] = [
         address: '0x8207c1ffc5b6804f6024322ccf34f29c3541ae26'
       },
       {
-        name: 'ZRX',
-        img: '/img/zrx.png',
-        address: '0xe41d2489571d322189246dafa5ebde1f4699f498'
+        name: '1INCH',
+        img: '/img/1inch.png',
+        address: '0x111111111117dc0aa78b770fa6a738034120c302'
       }
     ]
   },
@@ -42,25 +42,25 @@ export const portfolios: IPortfolio[] = [
     portfolio: 'Defi',
     investmentCoins: [
       {
-        name: 'INJ',
-        img: '/img/inj.png',
-        address: '0xe28b3b32b6c345a34ff64674606124dd5aceca30'
+        name: 'SSV',
+        img: '/img/ssv.png',
+        address: '0x9d65ff81a3c488d585bbfb0bfe3c7707c7917f54'
       },
       {
-        name: 'PENDLE',
-        img: '/img/pendle.png',
-        address: '0x808507121b80c02388fad14726482e061b8da827'
+        name: 'ZRX',
+        img: '/img/zrx.png',
+        address: '0xe41d2489571d322189246dafa5ebde1f4699f498'
       },
       {
-        name: 'DIA',
-        img: '/img/dia.png',
-        address: '0x84ca8bc7997272c7cfb4d0cd3d55cd942b3c9419'
+        name: 'FXS',
+        img: '/img/pepe.png',
+        address: '0x3432b6a60d23ca0dfca7761b7ab56459d9c964d0'
       },
-      // {
-      //   name: 'BICO',
-      //   img: '/img/bico.png',
-      //   address: '0xf17e65822b568b3903685a7c9f496cf7656cc6c2'
-      // },
+      {
+        name: 'AAVE',
+        img: '/img/aave.png',
+        address: '0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9'
+      },
     ]
   },
   {
@@ -71,15 +71,20 @@ export const portfolios: IPortfolio[] = [
         img: '/img/link.png',
         address: '0x514910771af9ca656af840dff83e8264ecf986ca'
       },
+      // {
+      //   name: 'TRB',
+      //   img: '/img/trb.png',
+      //   address: '0x88df592f8eb5d7bd38bfef7deb0fbc02cf3778a0'
+      // },
       {
         name: 'API3',
         img: '/img/api3.png',
-        address: '0x0b38210ea11411557c13457D4dA7dC6ea731B88a'
+        address: '0x0b38210ea11411557c13457d4da7dc6ea731b88a'
       },
       {
-        name: 'BAND',
-        img: '/img/band.png',
-        address: '0xba11d00c5f74255f56a5e366f4f77f5a186d7f55'
+        name: 'DIA',
+        img: '/img/dia.png',
+        address: '0x84ca8bc7997272c7cfb4d0cd3d55cd942b3c9419'
       },
     ]
   },
@@ -91,11 +96,21 @@ export const portfolios: IPortfolio[] = [
         img: '/img/spell.png',
         address: '0x090185f2135308bad17527004364ebcc2d37e5f6'
       },
+      {
+        name: 'ALCX',
+        img: '/img/alcx.png',
+        address: '0xdbdb4d16eda451d0503b854cf79d55697f90c8df'
+      },
     ]
   },
   {
-    portfolio: 'Gaming',
+    portfolio: 'Entertainment',
     investmentCoins: [
+      {
+        name: 'NAKA',
+        img: '/img/shiba.png',
+        address: '0x2e10348ee563dec5fe483de558d1946b7a3372c2'
+      },
       {
         name: 'MC',
         img: '/img/mc.png',
