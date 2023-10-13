@@ -93,9 +93,12 @@ input[type=number] {
 
 body {
     background-color: #111111;
+    color: #ffffff;
+    font-size: 20px;
+    font-weight: 400;
 }
 
-.open{
+.open {
     overflow: hidden;
 }
 

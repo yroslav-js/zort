@@ -29,26 +29,6 @@ const ZVaults = () => {
         </div>
       </div>
       <div className="holdings">
-        <div className="group-container">
-          <div className="group-556">
-            <img className="group-1200" src="img/group-1200@4x.png" alt="Group 1200"/>
-            <div className="group-552 inter-normal-black-haze-14px">
-              <Link href='/' className="fourth-link-13">
-                Home
-              </Link>
-              <div className="overlap-group-3">
-                <div className="fourth-link-14">ZVaults</div>
-              </div>
-              {/*<div className="fourth-link-15 not-now">Analytics</div>*/}
-              {/*<div className="fourth-link-16 not-now">Settings</div>*/}
-            </div>
-          </div>
-          <div className="group-705">
-            <div className="fourth-link-17 inter-semi-bold-white-12px not-now" onClick={() => {
-              !isConnected && setIsModalOpen(true)
-            }}>{isConnected ? "Connected" : "Connect Wallet"}</div>
-          </div>
-        </div>
         <div className="holding-tables">
           <div className="holding-table-box">
             <h3 className="holding-title"> Ethereum Ecosystem <span className="holding-profit">2</span>
@@ -540,18 +520,6 @@ const ZVaults = () => {
                 </tr>
               </table>
             </div>
-          </div>
-        </div>
-        <div className="group-627">
-          <p className="zort-inc-2023-all-rights-reserved inter-normal-quick-silver-10px"> © ZORT Inc. 2023. Last
-            update <span
-              className="date-update"></span></p>
-          <div className="frame-604 inter-normal-white-10px">
-            <div className="frame-604-item">News</div>
-            <div className="ellipse"></div>
-            <div className="frame-604-item">Terms and Conditions</div>
-            <div className="ellipse"></div>
-            <div className="frame-604-item">Privacy Policy</div>
           </div>
         </div>
       </div>

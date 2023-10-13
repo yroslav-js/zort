@@ -3,6 +3,7 @@ import type {Metadata} from 'next'
 import {ReactNode} from "react";
 import {WagmiAppConfig} from "@/components/layout/WagmiAppConfig";
 import {Inter} from 'next/font/google'
+import Layout from "@/components/layout/Layout";
 
 export const metadata: Metadata = {
   title: 'Zort ZVaults',
@@ -24,7 +25,9 @@ export default function RootLayout({
     <html lang="en" className={inter.className}>
     <body>
     <WagmiAppConfig>
-      {children}
+      <Layout>
+        {children}
+      </Layout>
     </WagmiAppConfig>
     </body>
     </html>

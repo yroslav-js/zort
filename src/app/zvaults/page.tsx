@@ -4,7 +4,8 @@ const ZVaults = dynamic(() => import('@/components/screens/ZVaults/ZVaults'), {s
 
 const ZVaultsPage = () => {
   return (
-    <ZVaults/>
+    <div></div>
+    // <ZVaults/>
   );
 };
 

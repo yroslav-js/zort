@@ -13,16 +13,18 @@ const Gaming = dynamic(() => import('@/components/screens/Portfolio/Gaming'), {s
 const PortfolioPage = ({params}: { params: { portfolio: string } }) => {
   const router = useRouter()
 
-  if (params.portfolio === 'NFT') return <NFT/>
-  if (params.portfolio === 'YieldFarming') return <YieldFarming/>
-  if (params.portfolio === 'Defi') return <Defi/>
-  if (params.portfolio === 'EthereumEcosystem') return <EthereumEcosystem/>
-  if (params.portfolio === 'Oracle') return <Oracle/>
-  if (params.portfolio === 'Gaming') return <Gaming/>
-  else {
-    router.push('/')
-    return null
-  }
+  return <div></div>
+
+  // if (params.portfolio === 'NFT') return <NFT/>
+  // if (params.portfolio === 'YieldFarming') return <YieldFarming/>
+  // if (params.portfolio === 'Defi') return <Defi/>
+  // if (params.portfolio === 'EthereumEcosystem') return <EthereumEcosystem/>
+  // if (params.portfolio === 'Oracle') return <Oracle/>
+  // if (params.portfolio === 'Gaming') return <Gaming/>
+  // else {
+  //   router.push('/')
+  //   return null
+  // }
 };
 
 export default PortfolioPage;

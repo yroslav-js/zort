@@ -1,5 +1,13 @@
 interface IPortfolio {
-  portfolio: string
+  name: string
+  score: string
+  scoreImg: string
+  days: string
+  percent: string
+  graph: string
+  isNew: boolean
+  category: string
+  classname: string
   investmentCoins: {
     name: string
     img: string
@@ -9,7 +17,15 @@ interface IPortfolio {
 
 export const portfolios: IPortfolio[] = [
   {
-    portfolio: 'NFT',
+    name: 'NFT',
+    score: '9.9',
+    scoreImg: '/img/ellipse-27-7.svg',
+    days: '101 Days',
+    percent: '34.4%',
+    graph: '/img/frame-582.svg',
+    isNew: true,
+    category: 'NFT',
+    classname: 'purple',
     investmentCoins: [
       {
         name: 'GAL',
@@ -24,22 +40,38 @@ export const portfolios: IPortfolio[] = [
     ]
   },
   {
-    portfolio: 'Ethereum Ecosystem',
+    name: 'Yield Farming',
+    score: '9.2',
+    scoreImg: '/img/ellipse-27-4.svg',
+    days: '88 Days',
+    percent: '45.17%',
+    graph: '/img/frame-576.svg',
+    isNew: true,
+    category: 'Defi',
+    classname: 'yellow',
     investmentCoins: [
       {
-        name: 'OGN',
-        img: '/img/ogn.png',
-        address: '0x8207c1ffc5b6804f6024322ccf34f29c3541ae26'
+        name: 'SPELL',
+        img: '/img/spell.png',
+        address: '0x090185f2135308bad17527004364ebcc2d37e5f6'
       },
       {
-        name: '1INCH',
-        img: '/img/1inch.png',
-        address: '0x111111111117dc0aa78b770fa6a738034120c302'
-      }
+        name: 'ALCX',
+        img: '/img/alcx.png',
+        address: '0xdbdb4d16eda451d0503b854cf79d55697f90c8df'
+      },
     ]
   },
   {
-    portfolio: 'Defi',
+    name: 'Defi',
+    score: '9.2',
+    scoreImg: '/img/ellipse-27-4.svg',
+    days: '95 Days',
+    percent: '146.7%',
+    graph: '/img/frame-576.svg',
+    isNew: false,
+    category: 'Defi',
+    classname: 'yellow',
     investmentCoins: [
       {
         name: 'SSV',
@@ -64,18 +96,44 @@ export const portfolios: IPortfolio[] = [
     ]
   },
   {
-    portfolio: 'Oracle',
+    name: 'Ethereum Ecosystem',
+    score: '9.1',
+    scoreImg: '/img/ellipse-27.svg',
+    days: '89 Days',
+    percent: '95.7%',
+    graph: '/img/frame-575.svg',
+    isNew: false,
+    category: 'Fundamental',
+    classname: 'green',
+    investmentCoins: [
+      {
+        name: 'OGN',
+        img: '/img/ogn.png',
+        address: '0x8207c1ffc5b6804f6024322ccf34f29c3541ae26'
+      },
+      {
+        name: '1INCH',
+        img: '/img/1inch.png',
+        address: '0x111111111117dc0aa78b770fa6a738034120c302'
+      }
+    ]
+  },
+  {
+    name: 'Oracle',
+    score: '9.1',
+    scoreImg: '/img/ellipse-27.svg',
+    days: '89 Days',
+    percent: '105.13%',
+    graph: '/img/frame-575.svg',
+    isNew: false,
+    category: 'Fundamental',
+    classname: 'green',
     investmentCoins: [
       {
         name: 'LINK',
         img: '/img/link.png',
         address: '0x514910771af9ca656af840dff83e8264ecf986ca'
       },
-      // {
-      //   name: 'TRB',
-      //   img: '/img/trb.png',
-      //   address: '0x88df592f8eb5d7bd38bfef7deb0fbc02cf3778a0'
-      // },
       {
         name: 'API3',
         img: '/img/api3.png',
@@ -89,22 +147,15 @@ export const portfolios: IPortfolio[] = [
     ]
   },
   {
-    portfolio: 'Yield Farming',
-    investmentCoins: [
-      {
-        name: 'SPELL',
-        img: '/img/spell.png',
-        address: '0x090185f2135308bad17527004364ebcc2d37e5f6'
-      },
-      {
-        name: 'ALCX',
-        img: '/img/alcx.png',
-        address: '0xdbdb4d16eda451d0503b854cf79d55697f90c8df'
-      },
-    ]
-  },
-  {
-    portfolio: 'Entertainment',
+    name: 'Entertainment',
+    score: '9.9',
+    scoreImg: '/img/ellipse-27-7.svg',
+    days: '78 Days',
+    percent: '129.8%',
+    graph: '/img/frame-582.svg',
+    isNew: false,
+    category: 'Meme',
+    classname: 'blue',
     investmentCoins: [
       {
         name: 'MC',
