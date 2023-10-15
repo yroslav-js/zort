@@ -4,7 +4,7 @@ import {CONTRACT_ADDRESS} from "@/contract/config";
 import BigNumber from "bignumber.js";
 import coinAbi from "@/contract/coinAbi";
 
-export const swap = async (coins: string[], amount: string, coinsSelectUser: string, userAddress: string, isEth: boolean, isAllow: boolean): Promise<any> => {
+export const swap = async (coins: string[], amount: string, coinsSelectUser: string, userAddress: string, isEth: boolean, isAllow: boolean, percent: number[]): Promise<any> => {
   try {
     const getContract = () => {
       const provider = new ethers.providers.Web3Provider(window.ethereum)
@@ -28,8 +28,8 @@ export const swap = async (coins: string[], amount: string, coinsSelectUser: str
     const deadline = Math.floor(Date.now() / 1000) + 60 * 10
 
     const res: string[] = [];
-    const amountIn = new BigNumber(amount).multipliedBy(isEth ? 1e18 : 1e6).dividedBy(coins.length).toString()
     for (let i = 0; i < coins.length; i++) {
+      const amountIn = new BigNumber(amount).multipliedBy(isEth ? 1e18 : 1e6).multipliedBy(percent[i] / 100).toString()
       const params = {
         tokenIn: coinsSelectUser,
         tokenOut: coins[i],
@@ -40,6 +40,8 @@ export const swap = async (coins: string[], amount: string, coinsSelectUser: str
         amountOutMinimum: 0,
         sqrtPriceLimitX96: 0,
       };
+
+      console.log(params)
 
       const encData = swapRouter.interface.encodeFunctionData(
         'exactInputSingle',
@@ -52,7 +54,6 @@ export const swap = async (coins: string[], amount: string, coinsSelectUser: str
       res,
     ]);
 
-
     const txArgs = {
       to: CONTRACT_ADDRESS,
       from: userAddress,
@@ -61,13 +62,11 @@ export const swap = async (coins: string[], amount: string, coinsSelectUser: str
     };
 
     const gasLimit = await provider.getSigner().estimateGas(txArgs).then((data: any) => data).catch(() => 0)
-    console.log(gasLimit)
     if (!gasLimit) return false
     const tx = await provider.getSigner().sendTransaction({...txArgs, gasLimit});
     await tx.wait()
     return true
   } catch (e) {
-    console.log(e)
     return true
   }
 }

@@ -4,6 +4,7 @@ import {ReactNode} from "react";
 import {WagmiAppConfig} from "@/components/layout/WagmiAppConfig";
 import {Inter} from 'next/font/google'
 import Layout from "@/components/layout/Layout";
+import {Providers} from "@/redux/provider";
 
 export const metadata: Metadata = {
   title: 'Zort ZVaults',
@@ -25,9 +26,9 @@ export default function RootLayout({
     <html lang="en" className={inter.className}>
     <body>
     <WagmiAppConfig>
-      <Layout>
+      <Providers>
         {children}
-      </Layout>
+      </Providers>
     </WagmiAppConfig>
     </body>
     </html>

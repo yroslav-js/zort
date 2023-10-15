@@ -5,10 +5,12 @@ import Link from "next/link";
 import {useEffect, useState} from "react";
 import {useAccount, useBalance, useConnect, useNetwork, useSwitchNetwork} from "wagmi";
 import {chainId, getCoinContract} from "@/contract/web3";
-import {CONTRACT_ADDRESS, USDC_CONTRACT_ADDRESS, USDT_CONTRACT_ADDRESS} from "@/contract/config";
-import {portfolios} from "@/data/portfolios";
+import {IPortfolio, portfolios} from "@/data/portfolios";
 import clsx from "clsx";
 import {AnimatePresence, motion} from 'framer-motion'
+import InvestModal from "@/components/ui/InvestModal/InvestModal";
+import {setIsModalOpen} from "@/redux/features/modalSlice";
+import {useAppDispatch} from "@/hooks/reduxHooks";
 
 const trending = [
   {
@@ -33,6 +35,7 @@ const trending = [
   },
 ]
 
+
 function getWindowDimensions() {
   const {innerWidth: width, innerHeight: height} = window;
   return {
@@ -42,54 +45,23 @@ function getWindowDimensions() {
 }
 
 const Main = () => {
-  const {isConnected, address} = useAccount()
+  const {isConnected} = useAccount()
   const [windowDimensions, setWindowDimensions] = useState(getWindowDimensions());
-
-  const [select, setSelect] = useState(false)
-  const [selectedToken, setSelectedToken] = useState(0)
-  const [invest, setInvest] = useState(false)
-  const [portfolio, setPortfolio] = useState('')
-  const [amount, setAmount] = useState('')
-  const [transactionLoading, setTransactionLoading] = useState(false)
   const {chain} = useNetwork()
   const {switchNetwork} = useSwitchNetwork()
-  const [balanceUSDT, setBalanceUSDT] = useState(0)
-  const [balanceUSDC, setBalanceUSDC] = useState(0)
-  const [allowanceUSDT, setAllowanceUSDT] = useState(0)
-  const [allowanceUSDC, setAllowanceUSDC] = useState(0)
-  const [isEth, setIsEth] = useState(false)
   const [filter, setFilter] = useState('ALL')
-  const {data} = useBalance({address})
+  const dispatch = useAppDispatch()
+
+  const [investPortfolio, setInvestPortfolio] = useState<IPortfolio | null>(null)
 
   useEffect(() => {
-    if (selectedToken === 0) setIsEth(true)
-    else setIsEth(false)
-  }, [selectedToken])
+    investPortfolio && window.document.querySelector("body")?.classList.add("open");
+    !investPortfolio && window.document.querySelector("body")?.classList.remove("open")
+  }, [investPortfolio])
 
   useEffect(() => {
     if (isConnected && chain?.id !== chainId) switchNetwork?.(chainId)
   }, [isConnected])
-
-  useEffect(() => {
-    const getCoinData = async () => {
-      try {
-        const usdt = await getCoinContract(USDT_CONTRACT_ADDRESS)?.balanceOf(address)
-        setBalanceUSDT(Number(usdt) / 10 ** 6)
-
-        const allowanceUSDT = await getCoinContract(USDT_CONTRACT_ADDRESS)?.allowance(address, CONTRACT_ADDRESS)
-        setAllowanceUSDT(Number(allowanceUSDT) / 10 ** 6)
-
-        const usdc = await getCoinContract(USDC_CONTRACT_ADDRESS)?.balanceOf(address)
-        setBalanceUSDC(Number(usdc) / 10 ** 6)
-
-        const allowanceUSDC = await getCoinContract(USDT_CONTRACT_ADDRESS)?.allowance(address, CONTRACT_ADDRESS)
-        setAllowanceUSDC(Number(allowanceUSDC) / 10 ** 6)
-      } catch (e) {
-      }
-    }
-    getCoinData()
-  }, [transactionLoading, address])
-
 
   useEffect(() => {
     function handleResize() {
@@ -187,8 +159,9 @@ const Main = () => {
                       </div>
                     </div>
                     <button className={styles.investButton} onClick={() => {
-                      setPortfolio(portfolio.name)
-                      setInvest(true)
+                      if (!isConnected) return dispatch(setIsModalOpen(true))
+                      if (chain?.id !== chainId) return switchNetwork?.(chainId)
+                      setInvestPortfolio(portfolio)
                     }}>
                       <img src="/img/frame-5.svg" alt=""/>
                       Join Now
@@ -265,6 +238,8 @@ const Main = () => {
           </div>
         </div>
       </div>
+
+      <InvestModal portfolio={investPortfolio} setInvestPortfolio={setInvestPortfolio}/>
     </>
   );
 };

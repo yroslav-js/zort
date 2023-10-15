@@ -8,7 +8,6 @@ export const getCoinContract = (address: string) => {
     const contract = new ethers.Contract(address, coinAbi, provider);
     return contract.connect(provider.getSigner())
   } catch (e) {
-    console.log(e)
   }
 }
 

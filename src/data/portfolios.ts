@@ -1,4 +1,4 @@
-interface IPortfolio {
+export interface IPortfolio {
   name: string
   score: string
   scoreImg: string
