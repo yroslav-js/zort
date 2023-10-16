@@ -8,43 +8,86 @@ import {Range} from "react-range";
 import {stopZVaults, swap} from "@/contract/functions";
 import userSelectToken from "@/data/userSelectToken";
 import {useAccount, useBalance} from "wagmi";
-import {ETH_CONTRACT_ADDRESS} from "@/contract/config";
 import BigNumber from "bignumber.js";
+import {Modal} from "antd";
+import {toast} from "react-toastify";
 
 const colors = ['#8EE8E2', '#3399F6', '#E3E4AB', '#E4ABAB', '#BFB0EB']
 
-const InvestModal = ({portfolio, currency = 'ETH', setInvestPortfolio, balanceOfAllTokens, isStopable, setRefetch}: {
-  portfolio: IPortfolio | null,
-  currency?: string,
-  setInvestPortfolio: Dispatch<SetStateAction<IPortfolio | null>>,
-  balanceOfAllTokens: { address: string, balance: BigNumber }[],
-  isStopable: boolean,
-  setRefetch: Dispatch<SetStateAction<boolean>>
-}) => {
+const getError = (err: any) => {
+  toast.error(err, {
+    position: "top-right",
+    autoClose: 2000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: false,
+    draggable: true,
+    progress: undefined,
+    theme: "dark",
+  });
+}
+
+const InvestModal = (
+  {
+    portfolio, setInvestPortfolio, balanceOfAllTokens, isStopable, setRefetch,
+    balanceUSDT, balanceUSDC, allowanceUSDT, allowanceUSDC
+  }: {
+    portfolio: IPortfolio | null, setInvestPortfolio: Dispatch<SetStateAction<IPortfolio | null>>,
+    balanceOfAllTokens: { address: string, balance: BigNumber }[], isStopable: boolean,
+    setRefetch: Dispatch<SetStateAction<boolean>>, balanceUSDT: number,
+    balanceUSDC: number, allowanceUSDT: number, allowanceUSDC: number,
+  }) => {
   const [percent, setPercent] = useState([0])
   const [amount, setAmount] = useState('')
-  const [firstAgree, setFirstAgree] = useState(false)
-  const [secondAgree, setSecondAgree] = useState(false)
+  const [firstAgree, setFirstAgree] = useState(true)
+  const [secondAgree, setSecondAgree] = useState(true)
   const {address} = useAccount()
   const {data} = useBalance({address})
   const [transactionLoading, setTransactionLoading] = useState(false)
+  const [selectedCoin, setSelectedCoin] = useState(0)
+  const [open, setOpen] = useState(false)
+
+  console.log(percent)
 
   useEffect(() => {
-    setPercent(portfolio?.investmentCoins.map(_ => 100 / portfolio.investmentCoins.length) || [0])
+    setPercent(portfolio?.investmentCoins.map(_ => Number((100 / portfolio.investmentCoins.length).toFixed(1))) || [0])
   }, [portfolio])
 
   return (
     <div className={clsx(styles.modalWrapper, portfolio && styles.active)}>
       <div className={styles.modal}>
+        <Modal
+          open={open}
+          footer={null}
+          onCancel={() => setOpen(false)}
+          title="Select a token"
+        >
+          <div>
+            {userSelectToken.map((coin, i) => {
+              return (
+                <div style={i === selectedCoin ? {opacity: .5} : {}} key={coin.name} onClick={() => {
+                  setSelectedCoin(i)
+                  setOpen(false)
+                }}
+                     className={styles.selectModal}>
+                  {coin.name}
+                  <img style={{width: '28px', height: '28px'}} src={`${coin.icon}`} alt=""/>
+                </div>
+              );
+            })}
+          </div>
+        </Modal>
         <div className={styles.close} onClick={() => setInvestPortfolio(null)}></div>
         <div className={styles.title}>Invest in <span style={{color: '#E3E4AB'}}>{portfolio?.name}</span></div>
         <div className={styles.amountTitle}>Set amount you want to invest</div>
-        <div className={styles.input}>ETH <input
-          min={0} type="number" value={amount}
-          onChange={e => {
-            if (e.target.value.includes('-')) return
-            setAmount(e.target.value)
-          }}/></div>
+        <div className={styles.input}>
+          <div onClick={() => setOpen(true)}>{userSelectToken[selectedCoin].name}</div>
+          <input
+            min={0} type="number" value={amount}
+            onChange={e => {
+              if (e.target.value.includes('-')) return
+              setAmount(e.target.value)
+            }}/></div>
         <div className={styles.settings}>
           <div className={styles.balancing}>
             <div className={styles.switchBalance}>
@@ -54,7 +97,8 @@ const InvestModal = ({portfolio, currency = 'ETH', setInvestPortfolio, balanceOf
             {portfolio?.investmentCoins.map((coin, index) => (
               <div className={styles.token} key={coin.address}>
                 <img src={coin.img} alt=""/>
-                <div className={styles.name}><span style={{color: colors[index]}}>{coin.name}</span> {currency}</div>
+                <div className={styles.name}><span
+                  style={{color: colors[index]}}>{coin.name}</span> {userSelectToken[selectedCoin].name}</div>
                 <div className={styles.rangebar}>
                   <Range
                     step={1}
@@ -95,7 +139,17 @@ const InvestModal = ({portfolio, currency = 'ETH', setInvestPortfolio, balanceOf
                     )}
                   />
                 </div>
-                <div className={styles.percent}>{Number(percent[index]).toFixed(1)}%</div>
+                <div className={styles.percentSymbol}>
+                  <p><span>%</span></p>
+                  <input onChange={(e) => {
+                    if (percent.reduce((acc, num) => acc + num, 0) - percent[index] + +e.target.value > 100) return
+                    console.log(percent.map((n, i) => i === index ? +Number(e.target.value).toFixed(1) : n))
+                    setPercent(percent.map((n, i) => i === index ? +Number(e.target.value).toFixed(1) : n))
+                  }}
+                         type="number" className={styles.percent} min={0} max={100} value={percent[index] || ''}
+                         step={1}/>
+                </div>
+                {/*<div className={styles.percent}>{Number(percent[index]).toFixed(1)}%</div>*/}
               </div>
             ))}
           </div>
@@ -153,21 +207,32 @@ const InvestModal = ({portfolio, currency = 'ETH', setInvestPortfolio, balanceOf
         </div>
         <div className={styles.buttons} style={transactionLoading ? {opacity: .5} : {}}>
           <button className={styles.investButton} onClick={async () => {
-            if (Number(data?.formatted) < Number(amount) || transactionLoading) return
-            let isAllow = false
+            if (transactionLoading) return
+            if (selectedCoin === 0 && Number(data?.formatted) < Number(amount))
+              return getError(`insufficient funds, you have ${Number(data?.formatted).toFixed(5)} eth`)
+            if (Number(balanceUSDT) < Number(amount) && selectedCoin === 1)
+              return getError(`insufficient funds, you have ${Number(balanceUSDT).toFixed(5)} usdt`)
+            if (allowanceUSDT && allowanceUSDT < Number(amount) && selectedCoin === 1)
+              return getError(`you already have usdt allowance: ${Number(allowanceUSDT).toFixed(5)}`)
+            if (Number(balanceUSDC) < Number(amount) && selectedCoin === 2)
+              return getError(`insufficient funds, you have ${Number(balanceUSDC).toFixed(5)} usdc`)
+            if (allowanceUSDC && allowanceUSDC < Number(amount) && selectedCoin === 2)
+              return getError(`you already have usdc allowance: ${Number(allowanceUSDC).toFixed(5)}`)
             if (Number(amount) > 0 && portfolio) {
+              let isAllow = false
+              if (selectedCoin === 1 && allowanceUSDT > 0) isAllow = true
+              if (selectedCoin === 2 && allowanceUSDC > 0) isAllow = true
               setTransactionLoading(true)
               const isLiquidCoin = await swap(
                 portfolio?.investmentCoins.map(token => token.address) || [''],
                 // ['0x326C977E6efc84E512bB9C30f76E30c160eD06FB'],
-                amount, userSelectToken[0].address, address || '', true, isAllow,
-                percent
+                amount, userSelectToken[selectedCoin].address, address || '', !selectedCoin, isAllow, percent
               )
+              setTransactionLoading(false)
               setTimeout(() => {
                 setRefetch(true)
-                setTransactionLoading(false)
               }, 3000)
-              if (!isLiquidCoin) alert('some tokens do not have liquidity for this currency')
+              if (!isLiquidCoin) getError('some tokens do not have liquidity for this currency')
             }
           }}><img src="/img/frame-5.svg" alt=""/> Join now
           </button>
@@ -175,10 +240,10 @@ const InvestModal = ({portfolio, currency = 'ETH', setInvestPortfolio, balanceOf
             <button className={styles.stopButton} onClick={async () => {
               if (transactionLoading) return
               setTransactionLoading(true)
-              await stopZVaults(address || '', balanceOfAllTokens, ETH_CONTRACT_ADDRESS)
+              await stopZVaults(address || '', balanceOfAllTokens, userSelectToken[selectedCoin].address)
+              setTransactionLoading(false)
               setTimeout(() => {
                 setRefetch(true)
-                setTransactionLoading(false)
               }, 3000)
             }}>Stop Zvaults
             </button>

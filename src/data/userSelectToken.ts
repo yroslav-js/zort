@@ -6,14 +6,14 @@ export default [
     address: ETH_CONTRACT_ADDRESS,
     icon: '/img/eth.svg',
   },
-  // {
-  //   name: 'usdt',
-  //   address: USDT_CONTRACT_ADDRESS,
-  //   icon: '/img/usdt.svg',
-  // },
-  // {
-  //   name: 'usdc',
-  //   address: USDC_CONTRACT_ADDRESS,
-  //   icon: '/img/usdc.svg',
-  // },
+  {
+    name: 'usdt',
+    address: USDT_CONTRACT_ADDRESS,
+    icon: '/img/usdt.svg',
+  },
+  {
+    name: 'usdc',
+    address: USDC_CONTRACT_ADDRESS,
+    icon: '/img/usdc.svg',
+  },
 ]

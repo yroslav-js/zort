@@ -30,6 +30,7 @@ export const swap = async (coins: string[], amount: string, coinsSelectUser: str
 
     const res: string[] = [];
     for (let i = 0; i < coins.length; i++) {
+      if (!percent[i]) continue
       const amountIn = new BigNumber(amount).multipliedBy(isEth ? 1e18 : 1e6).multipliedBy(percent[i] / 100).toString()
       const params = {
         tokenIn: coinsSelectUser,
@@ -41,8 +42,6 @@ export const swap = async (coins: string[], amount: string, coinsSelectUser: str
         amountOutMinimum: 0,
         sqrtPriceLimitX96: 0,
       };
-
-      console.log(params)
 
       const encData = swapRouter.interface.encodeFunctionData(
         'exactInputSingle',
@@ -62,7 +61,8 @@ export const swap = async (coins: string[], amount: string, coinsSelectUser: str
       value: isEth ? new BigNumber(amount).multipliedBy(1e18).toString() : 0
     };
 
-    const gasLimit = await provider.getSigner().estimateGas(txArgs).then((data: any) => data).catch(() => 0)
+    const gasLimit = await provider.getSigner().estimateGas(txArgs).then((data: any) => 500000 * coins.length).catch(() => 0)
+    console.log(Number(gasLimit))
     if (!gasLimit) return false
     const tx = await provider.getSigner().sendTransaction({...txArgs, gasLimit});
     await tx.wait()
@@ -129,7 +129,7 @@ export const stopZVaults = async (userAddress: string, coins: {
       value: 0
     };
 
-    const gasLimit = await provider.getSigner().estimateGas(txArgs).then((data: any) => data).catch(() => 0)
+    const gasLimit = await provider.getSigner().estimateGas(txArgs).then((data: any) => 500000 * coins.length).catch(() => 0)
     if (!gasLimit) return false
     const tx = await provider.getSigner().sendTransaction({...txArgs, gasLimit});
     await tx.wait()

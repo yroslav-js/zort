@@ -77,14 +77,45 @@
     border-radius: 10px;
     border: 1px solid #242428;
     align-items: center;
-    padding-left: 18px;
-    gap: 18px;
     font-size: 14px;
     color: #3b3b3f;
     background-color: #171718;
     height: 61px;
     position: relative;
     margin-bottom: 30px;
+}
+
+.input > div {
+    padding-left: 8px;
+    min-width: 80px;
+    max-width: 80px;
+    position: relative;
+    cursor: pointer;
+    text-transform: uppercase;
+    text-align: end;
+    padding-right: 40px;
+}
+
+.input > div::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: 18px;
+    width: 12px;
+    height: 2px;
+    background-color: #3b3b3f;
+    transform: translateY(-50%) rotate(45deg);
+}
+
+.input > div::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    width: 12px;
+    height: 2px;
+    background-color: #3b3b3f;
+    transform: translateY(-50%) rotate(-45deg);
 }
 
 .input::after {
@@ -186,6 +217,7 @@
 
 .percent {
     min-width: 74px;
+    max-width: 74px;
     height: 42px;
     display: flex;
     justify-content: center;
@@ -194,6 +226,34 @@
     border-radius: 10px;
     border: 1px solid #242428;
     font-size: 14px;
+    text-align: center;
+    color: #FFFFFF;
+}
+
+.percentSymbol {
+    position: relative;
+    min-width: 74px;
+    max-width: 74px;
+    height: 42px;
+}
+
+.percentSymbol p {
+    position: absolute;
+    font-size: 14px;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    padding-right: 10px;
+    font-weight: 400;
+    pointer-events: none;
+}
+
+.percentSymbol span {
+    -webkit-padding-before: 2px;
 }
 
 .agree {
@@ -257,6 +317,22 @@
 
 .stopButton {
     background: linear-gradient(111deg, #D75E57 12.87%, #AE2F28 84.31%), linear-gradient(98deg, #6B3EED 0%, #963EED 99.39%);
+}
+
+.selectModal {
+    cursor: pointer;
+    color: white;
+    background: linear-gradient(180deg, rgb(106.62, 62.2, 236.94) 0%, rgb(149.57, 62.2, 236.94) 100%);
+    border-radius: 9px;
+    height: 38px;
+    display: flex;
+    margin-top: 20px;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 10px;
+    text-transform: uppercase;
+    font-size: 16px;
+    font-weight: 500;
 }
 
 @media (max-width: 576px) {

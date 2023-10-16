@@ -5,6 +5,7 @@ import {w3mProvider} from "@web3modal/ethereum";
 import {ReactNode} from "react";
 import {WalletConnectConnector} from "@wagmi/connectors/walletConnect";
 import {MetaMaskConnector} from "@wagmi/connectors/metaMask";
+import 'react-toastify/dist/ReactToastify.css'
 import {goerli} from "viem/chains";
 
 const chains = [mainnet]

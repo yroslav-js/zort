@@ -3,7 +3,7 @@
 import styles from './Main.module.css'
 import Link from "next/link";
 import {useEffect, useState} from "react";
-import {useAccount, useBalance, useConnect, useNetwork, useSwitchNetwork} from "wagmi";
+import {useAccount, useNetwork, useSwitchNetwork} from "wagmi";
 import {chainId, getCoinContract} from "@/contract/web3";
 import {IPortfolio, portfolios} from "@/data/portfolios";
 import clsx from "clsx";
@@ -12,6 +12,7 @@ import InvestModal from "@/components/ui/InvestModal/InvestModal";
 import {setIsModalOpen} from "@/redux/features/modalSlice";
 import {useAppDispatch} from "@/hooks/reduxHooks";
 import BigNumber from "bignumber.js";
+import {CONTRACT_ADDRESS, USDC_CONTRACT_ADDRESS, USDT_CONTRACT_ADDRESS} from "@/contract/config";
 
 const trending = [
   {
@@ -46,6 +47,7 @@ function getWindowDimensions() {
 }
 
 const Main = () => {
+  const dispatch = useAppDispatch()
   const {isConnected, address} = useAccount()
   const [windowDimensions, setWindowDimensions] = useState(getWindowDimensions());
   const {chain} = useNetwork()
@@ -55,6 +57,10 @@ const Main = () => {
   const [portfolioIndex, setPortfolioIndex] = useState(0)
   const [refetch, setRefetch] = useState(true)
   const [investPortfolio, setInvestPortfolio] = useState<IPortfolio | null>(null)
+  const [balanceUSDT, setBalanceUSDT] = useState(0)
+  const [balanceUSDC, setBalanceUSDC] = useState(0)
+  const [allowanceUSDT, setAllowanceUSDT] = useState(0)
+  const [allowanceUSDC, setAllowanceUSDC] = useState(0)
 
   useEffect(() => {
     investPortfolio && window.document.querySelector("body")?.classList.add("open");
@@ -82,6 +88,27 @@ const Main = () => {
       })
     }
   }, [address, chain, refetch]);
+
+  useEffect(() => {
+    const getCoinData = async () => {
+      try {
+        const usdt = await getCoinContract(USDT_CONTRACT_ADDRESS)?.balanceOf(address)
+        setBalanceUSDT(Number(usdt) / 10 ** 6)
+
+        const allowanceUSDT = await getCoinContract(USDT_CONTRACT_ADDRESS)?.allowance(address, CONTRACT_ADDRESS)
+        setAllowanceUSDT(Number(allowanceUSDT) / 10 ** 6)
+
+        const usdc = await getCoinContract(USDC_CONTRACT_ADDRESS)?.balanceOf(address)
+        setBalanceUSDC(Number(usdc) / 10 ** 6)
+
+        const allowanceUSDC = await getCoinContract(USDT_CONTRACT_ADDRESS)?.allowance(address, CONTRACT_ADDRESS)
+        setAllowanceUSDC(Number(allowanceUSDC) / 10 ** 6)
+      } catch (e) {
+      }
+    }
+
+    getCoinData()
+  }, [refetch, address])
 
   useEffect(() => {
     function handleResize() {
@@ -179,8 +206,8 @@ const Main = () => {
                       </div>
                     </div>
                     <button className={styles.investButton} onClick={() => {
-                      // if (!isConnected) return dispatch(setIsModalOpen(true))
-                      // if (chain?.id !== chainId) return switchNetwork?.(chainId)
+                      if (!isConnected) return dispatch(setIsModalOpen(true))
+                      if (chain?.id !== chainId) return switchNetwork?.(chainId)
                       setPortfolioIndex(index)
                       setInvestPortfolio(portfolio)
                     }}>
@@ -260,9 +287,12 @@ const Main = () => {
         </div>
       </div>
 
-      <InvestModal balanceOfAllTokens={balanceOfAllTokens[portfolioIndex]} portfolio={investPortfolio}
-                   setInvestPortfolio={setInvestPortfolio} setRefetch={setRefetch}
-                   isStopable={!!balanceOfAllTokens[portfolioIndex]?.find(coin => Number(coin.balance) > 0)}/>
+      <InvestModal
+        balanceOfAllTokens={balanceOfAllTokens[portfolioIndex]} portfolio={investPortfolio}
+        setInvestPortfolio={setInvestPortfolio} setRefetch={setRefetch} allowanceUSDC={allowanceUSDC}
+        balanceUSDT={balanceUSDT} balanceUSDC={balanceUSDC} allowanceUSDT={allowanceUSDT}
+        isStopable={!!balanceOfAllTokens[portfolioIndex]?.find(coin => Number(coin.balance) > 0)}
+      />
     </>
   );
 };
