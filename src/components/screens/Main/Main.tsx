@@ -45,13 +45,14 @@ function getWindowDimensions() {
 }
 
 const Main = () => {
-  const {isConnected} = useAccount()
+  const {isConnected, address} = useAccount()
   const [windowDimensions, setWindowDimensions] = useState(getWindowDimensions());
   const {chain} = useNetwork()
   const {switchNetwork} = useSwitchNetwork()
   const [filter, setFilter] = useState('ALL')
-  const dispatch = useAppDispatch()
-
+  const [balanceOfAllTokens, setBalanceOfAllTokens] = useState<{ address: string, balance: number }[][]>([])
+  const [portfolioIndex, setPortfolioIndex] = useState(0)
+  const [refetch, setRefetch] = useState(true)
   const [investPortfolio, setInvestPortfolio] = useState<IPortfolio | null>(null)
 
   useEffect(() => {
@@ -62,6 +63,24 @@ const Main = () => {
   useEffect(() => {
     if (isConnected && chain?.id !== chainId) switchNetwork?.(chainId)
   }, [isConnected])
+
+  useEffect(() => {
+    if (isConnected && address && chain?.id === chainId && refetch) {
+      setRefetch(false)
+      Promise.all(portfolios.map(async (p) => {
+        return await Promise.all(p.investmentCoins.map(async (c) => {
+          const balance = await getCoinContract(c.address)?.balanceOf(address)
+          return {
+            address: c.address,
+            balance
+          }
+        }))
+      })).then((data) => {
+        setBalanceOfAllTokens(data)
+      }).catch(() => {
+      })
+    }
+  }, [address, chain, refetch]);
 
   useEffect(() => {
     function handleResize() {
@@ -112,7 +131,7 @@ const Main = () => {
                     style={filter !== 'ALL' ? {justifyContent: "initial"} : {}}>
           <AnimatePresence>
             {
-              portfolios.filter(item => filter === 'ALL' || filter === item.category).map(portfolio => (
+              portfolios.map((portfolio, index) => filter === 'ALL' || filter === portfolio.category ? (
                 <motion.div layout transition={{duration: 0.3}}
                             animate={{opacity: 1, scale: 1}}
                             initial={{opacity: 0, scale: 0}} exit={{opacity: 0, scale: 0}} key={portfolio.name}
@@ -159,8 +178,9 @@ const Main = () => {
                       </div>
                     </div>
                     <button className={styles.investButton} onClick={() => {
-                      if (!isConnected) return dispatch(setIsModalOpen(true))
-                      if (chain?.id !== chainId) return switchNetwork?.(chainId)
+                      // if (!isConnected) return dispatch(setIsModalOpen(true))
+                      // if (chain?.id !== chainId) return switchNetwork?.(chainId)
+                      setPortfolioIndex(index)
                       setInvestPortfolio(portfolio)
                     }}>
                       <img src="/img/frame-5.svg" alt=""/>
@@ -170,7 +190,7 @@ const Main = () => {
                   <img className={styles.graph} src={portfolio.graph} alt=""/>
                   {portfolio.isNew && <div className={styles.new}>NEW</div>}
                 </motion.div>
-              ))
+              ) : null)
             }
           </AnimatePresence>
         </motion.div>
@@ -239,7 +259,9 @@ const Main = () => {
         </div>
       </div>
 
-      <InvestModal portfolio={investPortfolio} setInvestPortfolio={setInvestPortfolio}/>
+      <InvestModal balanceOfAllTokens={balanceOfAllTokens[portfolioIndex]} portfolio={investPortfolio}
+                   setInvestPortfolio={setInvestPortfolio} setRefetch={setRefetch}
+                   isStopable={!!balanceOfAllTokens[portfolioIndex]?.find(coin => Number(coin.balance) > 0)}/>
     </>
   );
 };

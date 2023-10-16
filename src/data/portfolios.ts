@@ -39,6 +39,24 @@ export const portfolios: IPortfolio[] = [
       },
     ]
   },
+  // {
+  //   name: 'NFT',
+  //   score: '9.9',
+  //   scoreImg: '/img/ellipse-27-7.svg',
+  //   days: '101 Days',
+  //   percent: '34.4%',
+  //   graph: '/img/frame-582.svg',
+  //   isNew: true,
+  //   category: 'NFT',
+  //   classname: 'purple',
+  //   investmentCoins: [
+  //     {
+  //       name: 'GAL',
+  //       img: '/img/gal.png',
+  //       address: '0x326C977E6efc84E512bB9C30f76E30c160eD06FB'
+  //     },
+  //   ]
+  // },
   {
     name: 'Yield Farming',
     score: '9.2',

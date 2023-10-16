@@ -5,16 +5,20 @@ import {IPortfolio, portfolios} from "@/data/portfolios";
 import clsx from "clsx";
 import {Dispatch, SetStateAction, useEffect, useState} from "react";
 import {Range} from "react-range";
-import {swap} from "@/contract/functions";
+import {stopZVaults, swap} from "@/contract/functions";
 import userSelectToken from "@/data/userSelectToken";
 import {useAccount, useBalance} from "wagmi";
+import {ETH_CONTRACT_ADDRESS} from "@/contract/config";
 
 const colors = ['#8EE8E2', '#3399F6', '#E3E4AB', '#E4ABAB', '#BFB0EB']
 
-const InvestModal = ({portfolio, currency = 'USDT', setInvestPortfolio}: {
+const InvestModal = ({portfolio, currency = 'ETH', setInvestPortfolio, balanceOfAllTokens, isStopable, setRefetch}: {
   portfolio: IPortfolio | null,
   currency?: string,
-  setInvestPortfolio: Dispatch<SetStateAction<IPortfolio | null>>
+  setInvestPortfolio: Dispatch<SetStateAction<IPortfolio | null>>,
+  balanceOfAllTokens: { address: string, balance: number }[],
+  isStopable: boolean,
+  setRefetch: Dispatch<SetStateAction<boolean>>
 }) => {
   const [percent, setPercent] = useState([0])
   const [amount, setAmount] = useState('')
@@ -32,9 +36,9 @@ const InvestModal = ({portfolio, currency = 'USDT', setInvestPortfolio}: {
     <div className={clsx(styles.modalWrapper, portfolio && styles.active)}>
       <div className={styles.modal}>
         <div className={styles.close} onClick={() => setInvestPortfolio(null)}></div>
-        <div className={styles.title}>Invest in <span>{portfolio?.name}</span></div>
+        <div className={styles.title}>Invest in <span style={{color: '#E3E4AB'}}>{portfolio?.name}</span></div>
         <div className={styles.amountTitle}>Set amount you want to invest</div>
-        <div className={styles.input}>USD <input
+        <div className={styles.input}>ETH <input
           min={0} type="number" value={amount}
           onChange={e => {
             if (e.target.value.includes('-')) return
@@ -49,7 +53,7 @@ const InvestModal = ({portfolio, currency = 'USDT', setInvestPortfolio}: {
             {portfolio?.investmentCoins.map((coin, index) => (
               <div className={styles.token} key={coin.address}>
                 <img src={coin.img} alt=""/>
-                <div className={styles.name}><span style={{color: colors[index]}}>{coin.name}</span> USDT</div>
+                <div className={styles.name}><span style={{color: colors[index]}}>{coin.name}</span> {currency}</div>
                 <div className={styles.rangebar}>
                   <Range
                     step={1}
@@ -146,19 +150,39 @@ const InvestModal = ({portfolio, currency = 'USDT', setInvestPortfolio}: {
             But instead of calculating R/R manually you can use TradingView's tools for short and long positions
           </div>
         </div>
-        <button className={styles.investButton} onClick={async () => {
-          if (Number(data?.formatted) < Number(amount) || transactionLoading) return
-          let isAllow = false
-          if (Number(amount) > 0 && portfolio) {
-            setTransactionLoading(true)
-            const isLiquidCoin = await swap(portfolio?.investmentCoins.map(token => token.address) || [''],
-              // ['0xc4c7ea4fab34bd9fb9a5e1b1a98df76e26e6407c'],
-              amount, userSelectToken[0].address, address || '', true, isAllow, percent)
-            if (!isLiquidCoin) alert('some tokens do not have liquidity for this currency')
-            setTransactionLoading(false)
+        <div className={styles.buttons} style={transactionLoading ? {opacity: .5} : {}}>
+          <button className={styles.investButton} onClick={async () => {
+            if (Number(data?.formatted) < Number(amount) || transactionLoading) return
+            let isAllow = false
+            if (Number(amount) > 0 && portfolio) {
+              setTransactionLoading(true)
+              const isLiquidCoin = await swap(
+                portfolio?.investmentCoins.map(token => token.address) || [''],
+                // ['0x326C977E6efc84E512bB9C30f76E30c160eD06FB'],
+                amount, userSelectToken[0].address, address || '', true, isAllow,
+                percent
+              )
+              setTimeout(() => {
+                setRefetch(true)
+              }, 3000)
+              if (!isLiquidCoin) alert('some tokens do not have liquidity for this currency')
+              setTransactionLoading(false)
+            }
+          }}><img src="/img/frame-5.svg" alt=""/> Join now
+          </button>
+          {isStopable &&
+            <button className={styles.stopButton} onClick={async () => {
+              if (transactionLoading) return
+              setTransactionLoading(true)
+              await stopZVaults(address || '', balanceOfAllTokens, ETH_CONTRACT_ADDRESS)
+              setTimeout(() => {
+                setRefetch(true)
+              }, 3000)
+              setTransactionLoading(false)
+            }}>Stop Zvaults
+            </button>
           }
-        }}><img src="/img/frame-5.svg" alt=""/> Join now
-        </button>
+        </div>
       </div>
     </div>
   );

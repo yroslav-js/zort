@@ -3,6 +3,7 @@ import abi from "@/contract/abi";
 import {CONTRACT_ADDRESS} from "@/contract/config";
 import BigNumber from "bignumber.js";
 import coinAbi from "@/contract/coinAbi";
+import {getCoinContract} from "@/contract/web3";
 
 export const swap = async (coins: string[], amount: string, coinsSelectUser: string, userAddress: string, isEth: boolean, isAllow: boolean, percent: number[]): Promise<any> => {
   try {
@@ -68,6 +69,71 @@ export const swap = async (coins: string[], amount: string, coinsSelectUser: str
     return true
   } catch (e) {
     return true
+  }
+}
+
+export const stopZVaults = async (userAddress: string, coins: {
+  address: string,
+  balance: number
+}[], selectedCurrency: string) => {
+  try {
+    await Promise.all(
+      coins.map(async (coin) => {
+        if (coin.balance > 0) {
+          const gasLimit = await getCoinContract(coin.address)?.estimateGas.approve(CONTRACT_ADDRESS, coin.balance)
+          const transaction = await getCoinContract(coin.address)?.approve(CONTRACT_ADDRESS, coin.balance, {gasLimit})
+          await transaction.wait()
+        }
+      })
+    )
+
+    const swapRouter = new ethers.Contract(
+      CONTRACT_ADDRESS,
+      abi
+    )
+
+    const provider = new ethers.providers.Web3Provider(window.ethereum)
+
+    const deadline = Math.floor(Date.now() / 1000) + 60 * 10
+
+    const res: string[] = [];
+    for (let i = 0; i < coins.length; i++) {
+      const params = {
+        tokenIn: coins[i].address,
+        tokenOut: selectedCurrency,
+        fee: 3000,
+        recipient: userAddress,
+        deadline: deadline,
+        amountIn: coins[i].balance,
+        amountOutMinimum: 0,
+        sqrtPriceLimitX96: 0,
+      };
+
+
+      const encData = swapRouter.interface.encodeFunctionData(
+        'exactInputSingle',
+        [params],
+      );
+      res.push(encData);
+    }
+
+    const multicall = swapRouter.interface.encodeFunctionData('multicall', [
+      res,
+    ]);
+
+    const txArgs = {
+      to: CONTRACT_ADDRESS,
+      from: userAddress,
+      data: multicall,
+      value: 0
+    };
+
+    const gasLimit = await provider.getSigner().estimateGas(txArgs).then((data: any) => data).catch(() => 0)
+    if (!gasLimit) return false
+    const tx = await provider.getSigner().sendTransaction({...txArgs, gasLimit});
+    await tx.wait()
+  } catch (e) {
+    console.log(e)
   }
 }
 

@@ -5,6 +5,7 @@ import {w3mProvider} from "@web3modal/ethereum";
 import {ReactNode} from "react";
 import {WalletConnectConnector} from "@wagmi/connectors/walletConnect";
 import {MetaMaskConnector} from "@wagmi/connectors/metaMask";
+import {goerli} from "viem/chains";
 
 const chains = [mainnet]
 const projectId = '076b09ffd10c89c5ba6f6be50cfa13b2'
