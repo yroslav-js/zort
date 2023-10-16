@@ -9,6 +9,7 @@ import {stopZVaults, swap} from "@/contract/functions";
 import userSelectToken from "@/data/userSelectToken";
 import {useAccount, useBalance} from "wagmi";
 import {ETH_CONTRACT_ADDRESS} from "@/contract/config";
+import BigNumber from "bignumber.js";
 
 const colors = ['#8EE8E2', '#3399F6', '#E3E4AB', '#E4ABAB', '#BFB0EB']
 
@@ -16,7 +17,7 @@ const InvestModal = ({portfolio, currency = 'ETH', setInvestPortfolio, balanceOf
   portfolio: IPortfolio | null,
   currency?: string,
   setInvestPortfolio: Dispatch<SetStateAction<IPortfolio | null>>,
-  balanceOfAllTokens: { address: string, balance: number }[],
+  balanceOfAllTokens: { address: string, balance: BigNumber }[],
   isStopable: boolean,
   setRefetch: Dispatch<SetStateAction<boolean>>
 }) => {
@@ -164,9 +165,9 @@ const InvestModal = ({portfolio, currency = 'ETH', setInvestPortfolio, balanceOf
               )
               setTimeout(() => {
                 setRefetch(true)
+                setTransactionLoading(false)
               }, 3000)
               if (!isLiquidCoin) alert('some tokens do not have liquidity for this currency')
-              setTransactionLoading(false)
             }
           }}><img src="/img/frame-5.svg" alt=""/> Join now
           </button>
@@ -177,8 +178,8 @@ const InvestModal = ({portfolio, currency = 'ETH', setInvestPortfolio, balanceOf
               await stopZVaults(address || '', balanceOfAllTokens, ETH_CONTRACT_ADDRESS)
               setTimeout(() => {
                 setRefetch(true)
+                setTransactionLoading(false)
               }, 3000)
-              setTransactionLoading(false)
             }}>Stop Zvaults
             </button>
           }

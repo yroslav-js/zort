@@ -11,6 +11,7 @@ import {AnimatePresence, motion} from 'framer-motion'
 import InvestModal from "@/components/ui/InvestModal/InvestModal";
 import {setIsModalOpen} from "@/redux/features/modalSlice";
 import {useAppDispatch} from "@/hooks/reduxHooks";
+import BigNumber from "bignumber.js";
 
 const trending = [
   {
@@ -50,7 +51,7 @@ const Main = () => {
   const {chain} = useNetwork()
   const {switchNetwork} = useSwitchNetwork()
   const [filter, setFilter] = useState('ALL')
-  const [balanceOfAllTokens, setBalanceOfAllTokens] = useState<{ address: string, balance: number }[][]>([])
+  const [balanceOfAllTokens, setBalanceOfAllTokens] = useState<{ address: string, balance: BigNumber }[][]>([])
   const [portfolioIndex, setPortfolioIndex] = useState(0)
   const [refetch, setRefetch] = useState(true)
   const [investPortfolio, setInvestPortfolio] = useState<IPortfolio | null>(null)

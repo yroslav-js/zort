@@ -148,14 +148,14 @@ export const portfolios: IPortfolio[] = [
     classname: 'green',
     investmentCoins: [
       {
-        name: 'LINK',
-        img: '/img/link.png',
-        address: '0x514910771af9ca656af840dff83e8264ecf986ca'
-      },
-      {
         name: 'API3',
         img: '/img/api3.png',
         address: '0x0b38210ea11411557c13457d4da7dc6ea731b88a'
+      },
+      {
+        name: 'LINK',
+        img: '/img/link.png',
+        address: '0x514910771af9ca656af840dff83e8264ecf986ca'
       },
       {
         name: 'DIA',

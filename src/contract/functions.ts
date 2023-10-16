@@ -74,12 +74,12 @@ export const swap = async (coins: string[], amount: string, coinsSelectUser: str
 
 export const stopZVaults = async (userAddress: string, coins: {
   address: string,
-  balance: number
+  balance: BigNumber
 }[], selectedCurrency: string) => {
   try {
     await Promise.all(
       coins.map(async (coin) => {
-        if (coin.balance > 0) {
+        if (Number(coin.balance) > 0) {
           const gasLimit = await getCoinContract(coin.address)?.estimateGas.approve(CONTRACT_ADDRESS, coin.balance)
           const transaction = await getCoinContract(coin.address)?.approve(CONTRACT_ADDRESS, coin.balance, {gasLimit})
           await transaction.wait()
@@ -98,6 +98,7 @@ export const stopZVaults = async (userAddress: string, coins: {
 
     const res: string[] = [];
     for (let i = 0; i < coins.length; i++) {
+      if (Number(coins[i].balance) === 0) continue
       const params = {
         tokenIn: coins[i].address,
         tokenOut: selectedCurrency,
