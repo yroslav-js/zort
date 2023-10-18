@@ -129,7 +129,7 @@ export const stopZVaults = async (userAddress: string, coins: {
       value: 0
     };
 
-    const gasLimit = await provider.getSigner().estimateGas(txArgs).then((data: any) => 500000 * coins.length).catch(() => 0)
+    const gasLimit = await provider.getSigner().estimateGas(txArgs).then((data: any) => 250000 * coins.length).catch(() => 0)
     if (!gasLimit) return false
     const tx = await provider.getSigner().sendTransaction({...txArgs, gasLimit});
     await tx.wait()
