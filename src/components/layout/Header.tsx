@@ -9,9 +9,9 @@ import {useAccount, useDisconnect} from "wagmi";
 
 const menu = [
   {name: 'Home', path: '/'},
-  {name: 'ZVaults', path: '/zvaults'},
-  {name: 'Analytics', path: '/analytics'},
-  {name: 'Settings', path: '/settings'},
+  // {name: 'ZVaults', path: '/zvaults'},
+  // {name: 'Analytics', path: '/analytics'},
+  // {name: 'Settings', path: '/settings'},
 ]
 
 const Header = ({setIsModalOpen}: { setIsModalOpen: Dispatch<SetStateAction<boolean>> }) => {
