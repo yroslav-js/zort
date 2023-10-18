@@ -41,13 +41,15 @@ const Header = ({setIsModalOpen}: { setIsModalOpen: Dispatch<SetStateAction<bool
         <ul className={styles.menu}>
           {menu.map(link => {
             return (
-              <li key={link.name} className={pathname === link.path ? styles.activeLink : ''}>
+              <li key={link.name} onClick={() => setIsOpen(false)}
+                  className={pathname === link.path ? styles.activeLink : ''}>
                 <Link href={link.path}>{link.name}</Link>
               </li>
             )
           })}
           <li style={{marginTop: '-8px'}}>
             <button className={styles.connectButton} onClick={() => {
+              setIsOpen(false)
               if (!isConnected) return setIsModalOpen(true)
               disconnect()
             }}>{connect}
