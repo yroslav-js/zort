@@ -19,7 +19,8 @@
     max-width: 352px;
     width: 100%;
     align-items: center;
-    justify-content: space-between;
+    /*justify-content: space-between;*/
+    justify-content: center;
     font-size: 14px;
     line-height: 22px;
 }
