@@ -451,7 +451,7 @@
         margin: 0 auto 20px;
     }
 
-    .portfolios {
+    .portfoliosWrapper {
         height: 717px;
     }
 
@@ -475,12 +475,15 @@
 }
 
 @media (max-width: 925px) {
+    .portfoliosWrapper {
+        height: 1434px;
+    }
+
     .portfolios {
         flex-direction: column;
         gap: 24px;
         justify-content: center;
         flex-wrap: nowrap;
-        height: 1434px;
         align-items: center;
     }
 
@@ -537,7 +540,7 @@
         margin-bottom: 24px;
     }
 
-    .portfolios {
+    .portfoliosWrapper {
         height: 1872px;
     }
 

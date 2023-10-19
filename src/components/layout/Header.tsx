@@ -9,9 +9,9 @@ import {useAccount, useDisconnect} from "wagmi";
 
 const menu = [
   {name: 'Home', path: '/'},
-  // {name: 'ZVaults', path: '/zvaults'},
+  {name: 'ZVaults', path: '/zvaults'},
   // {name: 'Analytics', path: '/analytics'},
-  // {name: 'Settings', path: '/settings'},
+  {name: 'Settings', path: '/settings'},
 ]
 
 const Header = ({setIsModalOpen}: { setIsModalOpen: Dispatch<SetStateAction<boolean>> }) => {
@@ -27,8 +27,6 @@ const Header = ({setIsModalOpen}: { setIsModalOpen: Dispatch<SetStateAction<bool
       setIsView(false)
     }, 200)
   }, [isOpen])
-
-  const connect = !isConnected ? 'Connect wallet' : 'Disconnect'
 
   return (
     <>
@@ -47,20 +45,21 @@ const Header = ({setIsModalOpen}: { setIsModalOpen: Dispatch<SetStateAction<bool
               </li>
             )
           })}
-          <li style={{marginTop: '-8px'}}>
+          <li style={isConnected ? {display: 'none'} : {marginTop: '-8px'}} className={styles.connectButtonWrapper}>
             <button className={styles.connectButton} onClick={() => {
               setIsOpen(false)
               if (!isConnected) return setIsModalOpen(true)
               disconnect()
-            }}>{connect}
+            }}>Connect wallet
             </button>
           </li>
         </ul>
         <div className={styles.connect}>
-          <button onClick={() => {
-            if (!isConnected) return setIsModalOpen(true)
-            disconnect()
-          }} className={styles.connectButton}>{connect}</button>
+          {!isConnected ? <button onClick={() => {
+              if (!isConnected) return setIsModalOpen(true)
+              disconnect()
+            }} className={styles.connectButton}>Connect wallet</button> :
+            <div className={styles.connectedPerson}><img src="/img/person.svg" alt=""/></div>}
           <div className={styles.burger} onClick={() => setIsOpen(prevState => !prevState)}>
             <span></span>
           </div>

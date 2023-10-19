@@ -47,8 +47,6 @@ const InvestModal = (
   const [selectedCoin, setSelectedCoin] = useState(0)
   const [open, setOpen] = useState(false)
 
-  console.log(percent)
-
   useEffect(() => {
     setPercent(portfolio?.investmentCoins.map(_ => Number((100 / portfolio.investmentCoins.length).toFixed(1))) || [0])
   }, [portfolio])
@@ -143,7 +141,6 @@ const InvestModal = (
                   <p><span>%</span></p>
                   <input onChange={(e) => {
                     if (percent.reduce((acc, num) => acc + num, 0) - percent[index] + +e.target.value > 100) return
-                    console.log(percent.map((n, i) => i === index ? +Number(e.target.value).toFixed(1) : n))
                     setPercent(percent.map((n, i) => i === index ? +Number(e.target.value).toFixed(1) : n))
                   }}
                          type="number" className={styles.percent} min={0} max={100} value={percent[index] || ''}
@@ -232,7 +229,7 @@ const InvestModal = (
               setTimeout(() => {
                 setRefetch(true)
               }, 3000)
-              if (!isLiquidCoin) getError('some tokens do not have liquidity for this currency')
+              if (!isLiquidCoin) getError('some tokens do not have liquidity in current currency')
             }
           }}><img src="/img/frame-5.svg" alt=""/> Join now
           </button>

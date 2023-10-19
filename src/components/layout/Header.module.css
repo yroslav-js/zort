@@ -19,13 +19,17 @@
     max-width: 352px;
     width: 100%;
     align-items: center;
-    /*justify-content: space-between;*/
-    justify-content: center;
+    justify-content: space-between;
+    /*justify-content: center;*/
     font-size: 14px;
     line-height: 22px;
 }
 
 .menu .connectButton {
+    display: none;
+}
+
+.connectButtonWrapper {
     display: none;
 }
 
@@ -72,6 +76,22 @@
     background-color: #fff;
     opacity: 0.03;
     border-radius: 40px;
+}
+
+.connectedPerson {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(255, 255, 255, .05);
+}
+
+.connectedPerson img {
+    display: inline-block;
+    width: 24px;
+    height: 24px;
 }
 
 @media (max-width: 1025px) {
@@ -192,6 +212,10 @@
 
     .view.active.menuBg {
         opacity: 1;
+    }
+
+    .connectButtonWrapper {
+        display: block;
     }
 
     .menu .connectButton {

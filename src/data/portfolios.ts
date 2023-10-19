@@ -28,35 +28,17 @@ export const portfolios: IPortfolio[] = [
     classname: 'purple',
     investmentCoins: [
       {
-        name: 'GAL',
-        img: '/img/gal.png',
-        address: '0x5faa989af96af85384b8a938c2ede4a7378d9875'
+        name: 'RLB',
+        img: '/img/RLB.png',
+        address: '0x046eee2cc3188071c02bfc1745a6b17c656e3f3d'
       },
       {
-        name: 'LM',
-        img: '/img/balancer.png',
-        address: '0x7bec98609cb6378d6f995e8f8097ee78376fbec9'
+        name: 'BLUR',
+        img: '/img/BLUR.png',
+        address: '0x5283d291dbcf85356a21ba090e6db59121208b44'
       },
     ]
   },
-  // {
-  //   name: 'NFT',
-  //   score: '9.9',
-  //   scoreImg: '/img/ellipse-27-7.svg',
-  //   days: '101 Days',
-  //   percent: '34.4%',
-  //   graph: '/img/frame-582.svg',
-  //   isNew: true,
-  //   category: 'NFT',
-  //   classname: 'purple',
-  //   investmentCoins: [
-  //     {
-  //       name: 'GAL',
-  //       img: '/img/gal.png',
-  //       address: '0x326C977E6efc84E512bB9C30f76E30c160eD06FB'
-  //     },
-  //   ]
-  // },
   {
     name: 'Yield Farming',
     score: '9.2',
@@ -69,14 +51,9 @@ export const portfolios: IPortfolio[] = [
     classname: 'yellow',
     investmentCoins: [
       {
-        name: 'SPELL',
-        img: '/img/spell.png',
-        address: '0x090185f2135308bad17527004364ebcc2d37e5f6'
-      },
-      {
-        name: 'ALCX',
-        img: '/img/alcx.png',
-        address: '0xdbdb4d16eda451d0503b854cf79d55697f90c8df'
+        name: 'YFII',
+        img: '/img/YFII.png',
+        address: '0xa1d0e215a23d7030842fc67ce582a6afa3ccab83'
       },
     ]
   },
@@ -92,24 +69,24 @@ export const portfolios: IPortfolio[] = [
     classname: 'yellow',
     investmentCoins: [
       {
-        name: 'SSV',
-        img: '/img/ssv.png',
-        address: '0x9d65ff81a3c488d585bbfb0bfe3c7707c7917f54'
+        name: 'INJ',
+        img: '/img/INJ.png',
+        address: '0xe28b3b32b6c345a34ff64674606124dd5aceca30'
       },
       {
-        name: 'ZRX',
-        img: '/img/zrx.png',
-        address: '0xe41d2489571d322189246dafa5ebde1f4699f498'
+        name: 'STP',
+        img: '/img/STP.png',
+        address: '0xde7d85157d9714eadf595045cc12ca4a5f3e2adb'
       },
       {
-        name: 'FXS',
-        img: '/img/pepe.png',
-        address: '0x3432b6a60d23ca0dfca7761b7ab56459d9c964d0'
+        name: 'KNC',
+        img: '/img/KNC.png',
+        address: '0xdefa4e8a7bcba345f687a2f1456f5edd9ce97202'
       },
       {
-        name: 'AAVE',
-        img: '/img/aave.png',
-        address: '0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9'
+        name: 'BNT',
+        img: '/img/BNT.png',
+        address: '0x1f573d6fb3f13d689ff844b4ce37794d79a7ff1c'
       },
     ]
   },
@@ -126,13 +103,13 @@ export const portfolios: IPortfolio[] = [
     investmentCoins: [
       {
         name: 'OGN',
-        img: '/img/ogn.png',
+        img: '/img/OGN.png',
         address: '0x8207c1ffc5b6804f6024322ccf34f29c3541ae26'
       },
       {
-        name: '1INCH',
-        img: '/img/1inch.png',
-        address: '0x111111111117dc0aa78b770fa6a738034120c302'
+        name: 'BZR',
+        img: '/img/BZR.png',
+        address: '0x8d96b4ab6c741a4c8679ae323a100d74f085ba8f'
       }
     ]
   },
@@ -148,19 +125,14 @@ export const portfolios: IPortfolio[] = [
     classname: 'green',
     investmentCoins: [
       {
-        name: 'API3',
-        img: '/img/api3.png',
-        address: '0x0b38210ea11411557c13457d4da7dc6ea731b88a'
-      },
-      {
         name: 'LINK',
-        img: '/img/link.png',
+        img: '/img/LINK.png',
         address: '0x514910771af9ca656af840dff83e8264ecf986ca'
       },
       {
-        name: 'DIA',
-        img: '/img/dia.png',
-        address: '0x84ca8bc7997272c7cfb4d0cd3d55cd942b3c9419'
+        name: 'BAND',
+        img: '/img/BAND.png',
+        address: '0xba11d00c5f74255f56a5e366f4f77f5a186d7f55'
       },
     ]
   },
@@ -176,9 +148,14 @@ export const portfolios: IPortfolio[] = [
     classname: 'blue',
     investmentCoins: [
       {
-        name: 'MC',
-        img: '/img/mc.png',
-        address: '0x949d48eca67b17269629c7194f4b727d4ef9e5d6'
+        name: 'VRA',
+        img: '/img/VRA.png',
+        address: '0xdf1d6405df92d981a2fb3ce68f6a03bac6c0e41f'
+      },
+      {
+        name: 'NAKA',
+        img: '/img/NAKA.png',
+        address: '0x2e10348ee563dec5fe483de558d1946b7a3372c2'
       },
     ]
   },

@@ -155,73 +155,75 @@ const Main = () => {
           </div>
           <Link href="/zvaults" className={clsx(styles.viewAll, styles.trendingViewAll)}>View All</Link>
         </div>
-        <motion.div className={styles.portfolios}
-                    style={filter !== 'ALL' ? {justifyContent: "initial"} : {}}>
-          <AnimatePresence>
-            {
-              portfolios.map((portfolio, index) => filter === 'ALL' || filter === portfolio.category ? (
-                <motion.div layout transition={{duration: 0.3}}
-                            animate={{opacity: 1, scale: 1}}
-                            initial={{opacity: 0, scale: 0}} exit={{opacity: 0, scale: 0}} key={portfolio.name}
-                            className={styles.portfolio}>
-                  <div className={styles.portfolioHead}>
-                    <div>
-                      <Link href='/NFT' className={styles.portfolioTitle}>
-                        {portfolio.name}
-                      </Link>
-                      <div className={styles.typeTokensWrapper}>
-                        <div className={clsx(styles.type, styles[portfolio.classname])}>{portfolio.category}</div>
-                        <div className={styles.tokens}>
-                          {coinsImage(portfolio.name)}
-                        </div>
-                      </div>
-                    </div>
-                    <div className={styles.score}>
-                      <img src={portfolio.scoreImg} alt=""/>
+        <div className={styles.portfoliosWrapper}>
+          <motion.div className={styles.portfolios}
+                      style={filter !== 'ALL' ? {justifyContent: "initial"} : {}}>
+            <AnimatePresence>
+              {
+                portfolios.map((portfolio, index) => filter === 'ALL' || filter === portfolio.category ? (
+                  <motion.div layout transition={{duration: 0.3}}
+                              animate={{opacity: 1, scale: 1}}
+                              initial={{opacity: 0, scale: 0}} exit={{opacity: 0, scale: 0}} key={portfolio.name}
+                              className={styles.portfolio}>
+                    <div className={styles.portfolioHead}>
                       <div>
-                        <div className={styles.scoreValue}>
-                          {portfolio.score}
+                        <Link href='/NFT' className={styles.portfolioTitle}>
+                          {portfolio.name}
+                        </Link>
+                        <div className={styles.typeTokensWrapper}>
+                          <div className={clsx(styles.type, styles[portfolio.classname])}>{portfolio.category}</div>
+                          <div className={styles.tokens}>
+                            {coinsImage(portfolio.name)}
+                          </div>
                         </div>
-                        <div className={styles.scoreText}>
-                          AI Score
+                      </div>
+                      <div className={styles.score}>
+                        <img src={portfolio.scoreImg} alt=""/>
+                        <div>
+                          <div className={styles.scoreValue}>
+                            {portfolio.score}
+                          </div>
+                          <div className={styles.scoreText}>
+                            AI Score
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                  <div className={styles.portfolioContent}>
-                    <div>
-                      <div className={styles.subTitleInfo}>
-                        Active for
+                    <div className={styles.portfolioContent}>
+                      <div>
+                        <div className={styles.subTitleInfo}>
+                          Active for
+                        </div>
+                        <div className={styles.days}>
+                          {portfolio.days}
+                        </div>
                       </div>
-                      <div className={styles.days}>
-                        {portfolio.days}
+                      <div>
+                        <div className={styles.subTitleInfo}>
+                          All Time Profit
+                        </div>
+                        <div className={styles.percent}>
+                          {portfolio.percent}
+                        </div>
                       </div>
+                      <button className={styles.investButton} onClick={() => {
+                        if (!isConnected) return dispatch(setIsModalOpen(true))
+                        if (chain?.id !== chainId) return switchNetwork?.(chainId)
+                        setPortfolioIndex(index)
+                        setInvestPortfolio(portfolio)
+                      }}>
+                        <img src="/img/frame-5.svg" alt=""/>
+                        Join Now
+                      </button>
                     </div>
-                    <div>
-                      <div className={styles.subTitleInfo}>
-                        All Time Profit
-                      </div>
-                      <div className={styles.percent}>
-                        {portfolio.percent}
-                      </div>
-                    </div>
-                    <button className={styles.investButton} onClick={() => {
-                      if (!isConnected) return dispatch(setIsModalOpen(true))
-                      if (chain?.id !== chainId) return switchNetwork?.(chainId)
-                      setPortfolioIndex(index)
-                      setInvestPortfolio(portfolio)
-                    }}>
-                      <img src="/img/frame-5.svg" alt=""/>
-                      Join Now
-                    </button>
-                  </div>
-                  <img className={styles.graph} src={portfolio.graph} alt=""/>
-                  {portfolio.isNew && <div className={styles.new}>NEW</div>}
-                </motion.div>
-              ) : null)
-            }
-          </AnimatePresence>
-        </motion.div>
+                    <img className={styles.graph} src={portfolio.graph} alt=""/>
+                    {portfolio.isNew && <div className={styles.new}>NEW</div>}
+                  </motion.div>
+                ) : null)
+              }
+            </AnimatePresence>
+          </motion.div>
+        </div>
       </div>
       <div className={styles.main}>
         <div className={styles.heading}>

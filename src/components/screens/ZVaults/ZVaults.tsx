@@ -1,528 +1,280 @@
 "use client"
 
-import "./ZVaults.css"
+import styles from "@/components/screens/Main/Main.module.css";
+import pageStyles from './ZVaults.module.css'
+import clsx from "clsx";
 import Link from "next/link";
-import {useAccount, useConnect, useNetwork, useSwitchNetwork} from "wagmi";
+import {AnimatePresence, motion} from "framer-motion";
+import {IPortfolio, portfolios} from "@/data/portfolios";
+import {setIsModalOpen} from "@/redux/features/modalSlice";
+import {chainId, getCoinContract} from "@/contract/web3";
+import InvestModal from "@/components/ui/InvestModal/InvestModal";
+import {useAppDispatch} from "@/hooks/reduxHooks";
+import {useAccount, useNetwork, useSwitchNetwork} from "wagmi";
 import {useEffect, useState} from "react";
-import {chainId} from "@/contract/web3";
+import BigNumber from "bignumber.js";
+import {CONTRACT_ADDRESS, USDC_CONTRACT_ADDRESS, USDT_CONTRACT_ADDRESS} from "@/contract/config";
+
+const trending = [
+  {
+    name: 'ALL',
+    classname: 'white',
+    amount: 6
+  },
+  {
+    name: 'Fundamental',
+    classname: 'green',
+    amount: 2
+  },
+  {
+    name: 'Defi',
+    classname: 'yellow',
+    amount: 2
+  },
+  {
+    name: 'NFT',
+    classname: 'purple',
+    amount: 1
+  },
+  {
+    name: 'Meme',
+    classname: 'blue',
+    amount: 1
+  },
+]
+
+function getWindowDimensions() {
+  const {innerWidth: width, innerHeight: height} = window;
+  return {
+    width,
+    height
+  };
+}
+
 
 const ZVaults = () => {
-  const {isConnected} = useAccount()
-  const {connect, connectors} = useConnect()
-  const [isModalOpen, setIsModalOpen] = useState(false)
+  const dispatch = useAppDispatch()
+  const {isConnected, address} = useAccount()
+  const [windowDimensions, setWindowDimensions] = useState(getWindowDimensions());
   const {chain} = useNetwork()
   const {switchNetwork} = useSwitchNetwork()
+  const [filter, setFilter] = useState({
+    'all': true,
+    'fundamental': false,
+    'defi': false,
+    'nft': false,
+    'meme': false
+  })
+  const [balanceOfAllTokens, setBalanceOfAllTokens] = useState<{ address: string, balance: BigNumber }[][]>([])
+  const [portfolioIndex, setPortfolioIndex] = useState(0)
+  const [refetch, setRefetch] = useState(true)
+  const [investPortfolio, setInvestPortfolio] = useState<IPortfolio | null>(null)
+  const [balanceUSDT, setBalanceUSDT] = useState(0)
+  const [balanceUSDC, setBalanceUSDC] = useState(0)
+  const [allowanceUSDT, setAllowanceUSDT] = useState(0)
+  const [allowanceUSDC, setAllowanceUSDC] = useState(0)
+
+  useEffect(() => {
+    investPortfolio && window.document.querySelector("body")?.classList.add("open");
+    !investPortfolio && window.document.querySelector("body")?.classList.remove("open")
+  }, [investPortfolio])
 
   useEffect(() => {
     if (isConnected && chain?.id !== chainId) switchNetwork?.(chainId)
   }, [isConnected])
+
+  useEffect(() => {
+    if (isConnected && address && chain?.id === chainId && refetch) {
+      setRefetch(false)
+      Promise.all(portfolios.map(async (p) => {
+        return await Promise.all(p.investmentCoins.map(async (c) => {
+          const balance = await getCoinContract(c.address)?.balanceOf(address)
+          return {
+            address: c.address,
+            balance
+          }
+        }))
+      })).then((data) => {
+        setBalanceOfAllTokens(data)
+      }).catch(() => {
+      })
+    }
+  }, [address, chain, refetch]);
+
+  useEffect(() => {
+    const getCoinData = async () => {
+      try {
+        const usdt = await getCoinContract(USDT_CONTRACT_ADDRESS)?.balanceOf(address)
+        setBalanceUSDT(Number(usdt) / 10 ** 6)
+
+        const allowanceUSDT = await getCoinContract(USDT_CONTRACT_ADDRESS)?.allowance(address, CONTRACT_ADDRESS)
+        setAllowanceUSDT(Number(allowanceUSDT) / 10 ** 6)
+
+        const usdc = await getCoinContract(USDC_CONTRACT_ADDRESS)?.balanceOf(address)
+        setBalanceUSDC(Number(usdc) / 10 ** 6)
+
+        const allowanceUSDC = await getCoinContract(USDT_CONTRACT_ADDRESS)?.allowance(address, CONTRACT_ADDRESS)
+        setAllowanceUSDC(Number(allowanceUSDC) / 10 ** 6)
+      } catch (e) {
+      }
+    }
+
+    getCoinData()
+  }, [refetch, address])
+
+  useEffect(() => {
+    function handleResize() {
+      setWindowDimensions(getWindowDimensions());
+    }
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  const coinsImage = (portfolio: string) => {
+    let amount = 5
+    if (windowDimensions.width <= 450) amount = 3
+    const coins = portfolios.find(p => p.name === portfolio)
+    return coins?.investmentCoins?.map((coin, i) => {
+      if (i > amount) return null
+      if (i === amount) return (
+        <div className={clsx(styles.amountTokensWrapper, styles[coins?.classname])} key={coin.name}>
+          <div className={styles.amountTokens}>
+            +{Number(coins?.investmentCoins.length) - amount}
+          </div>
+        </div>
+      )
+      return (<img src={coin.img} alt={`image ${i + 1}`} key={i}/>)
+    })
+  }
+
   return (
     <>
-      <div className="modal-bg" style={{display: isModalOpen ? 'block' : 'none'}} onClick={() => setIsModalOpen(false)}>
-        <div className="modal" onClick={e => e.stopPropagation()}>
-          {connectors.map(connector => (
-            <div className="connect-button" key={connector.name} onClick={() => {
-              setIsModalOpen(false)
-              connect({connector})
-            }}>{connector.name}</div>
-          ))}
+      <div className={styles.main}>
+        <div className={pageStyles.heading}>
+          <div className={pageStyles.selection}>
+            <span>Select Category</span>
+            <div className={pageStyles.categories}>
+              {trending.map(item => (
+                <div key={item.name}
+                     onClick={() => setFilter(prevState => {
+                       if (item.name.toLowerCase() !== 'all') return {
+                         ...prevState,
+                         [`${item.name.toLowerCase() as keyof typeof prevState}`]: !prevState[item.name.toLowerCase() as keyof typeof prevState],
+                         all: false
+                       }
+                       else return {
+                         'all': true,
+                         'fundamental': false,
+                         'defi': false,
+                         'nft': false,
+                         'meme': false
+                       }
+                     })}
+                     className={clsx(pageStyles[item.classname],
+                       filter[item.name.toLowerCase() as keyof typeof filter] && pageStyles.activeCategories)}>
+                  <div className={pageStyles.category}>
+                    <div className={pageStyles.title}>
+                      {item.name}
+                      <div className={pageStyles.amount}>
+                        {item.amount} ZVaults
+                      </div>
+                      <img src={`/img/${item.name.toLowerCase()}.svg`} alt=""/>
+                    </div>
+                    <div className={pageStyles.amount}>
+                      {item.amount} ZVaults
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className={pageStyles.sort}>
+            Sort by <span>Trending</span>
+            <div className={pageStyles.sortItems}>
+              <div>Trending</div>
+              <div>AI Score</div>
+              <div>Active time</div>
+            </div>
+          </div>
+        </div>
+        <div className={styles.portfoliosWrapper}>
+          <motion.div className={styles.portfolios}
+                      style={!filter['all'] ? {justifyContent: "initial"} : {}}>
+            <AnimatePresence>
+              {
+                portfolios.map((portfolio, index) => filter['all'] || filter[portfolio.category.toLowerCase() as keyof typeof filter] ? (
+                  <motion.div layout transition={{duration: 0.3}}
+                              animate={{opacity: 1, scale: 1}}
+                              initial={{opacity: 0, scale: 0}} exit={{opacity: 0, scale: 0}} key={portfolio.name}
+                              className={styles.portfolio}>
+                    <div className={styles.portfolioHead}>
+                      <div>
+                        <Link href='/NFT' className={styles.portfolioTitle}>
+                          {portfolio.name}
+                        </Link>
+                        <div className={styles.typeTokensWrapper}>
+                          <div className={clsx(styles.type, styles[portfolio.classname])}>{portfolio.category}</div>
+                          <div className={styles.tokens}>
+                            {coinsImage(portfolio.name)}
+                          </div>
+                        </div>
+                      </div>
+                      <div className={styles.score}>
+                        <img src={portfolio.scoreImg} alt=""/>
+                        <div>
+                          <div className={styles.scoreValue}>
+                            {portfolio.score}
+                          </div>
+                          <div className={styles.scoreText}>
+                            AI Score
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className={styles.portfolioContent}>
+                      <div>
+                        <div className={styles.subTitleInfo}>
+                          Active for
+                        </div>
+                        <div className={styles.days}>
+                          {portfolio.days}
+                        </div>
+                      </div>
+                      <div>
+                        <div className={styles.subTitleInfo}>
+                          All Time Profit
+                        </div>
+                        <div className={styles.percent}>
+                          {portfolio.percent}
+                        </div>
+                      </div>
+                      <button className={styles.investButton} onClick={() => {
+                        if (!isConnected) return dispatch(setIsModalOpen(true))
+                        if (chain?.id !== chainId) return switchNetwork?.(chainId)
+                        setPortfolioIndex(index)
+                        setInvestPortfolio(portfolio)
+                      }}>
+                        <img src="/img/frame-5.svg" alt=""/>
+                        Join Now
+                      </button>
+                    </div>
+                    <img className={styles.graph} src={portfolio.graph} alt=""/>
+                    {portfolio.isNew && <div className={styles.new}>NEW</div>}
+                  </motion.div>
+                ) : null)
+              }
+            </AnimatePresence>
+          </motion.div>
         </div>
       </div>
-      <div className="holdings">
-        <div className="holding-tables">
-          <div className="holding-table-box">
-            <h3 className="holding-title"> Ethereum Ecosystem <span className="holding-profit">2</span>
-            </h3>
-            <div className="holding-table defi">
-              <table>
-                <tr className="holdings-table-title">
-                  <th>Asset Name</th>
-                  <th>Price</th>
-                  <th>#</th>
-                  <th>24h</th>
-                  <th>7d</th>
-                  <th>1m</th>
-                  <th>3m</th>
-                  <th>MCap</th>
-                  <th>FDV</th>
-                  <th>24h volume</th>
-                  <th>Category</th>
-                  <th>Performance</th>
-                  <th>Bullishperiod</th>
-                  <th>Twitter performance</th>
-                  <th>AI Score</th>
-                  <th>Allocation</th>
-                </tr>
-                <tr>
-                  <td>OGN</td>
-                  <td>$0.0984</td>
-                  <td>330</td>
-                  <td>11.51%</td>
-                  <td>16.66%</td>
-                  <td>29.59%</td>
-                  <td>36.34%</td>
-                  <td>$55.03 M</td>
-                  <td>$98.40 M</td>
-                  <td>$34.03 M</td>
-                  <td>Ethereum Ecosystem</td>
-                  <td>Bullish</td>
-                  <td>13 /100</td>
-                  <td>1608</td>
-                  <td>0.13</td>
-                  <td>0.2</td>
-                </tr>
-                <tr>
-                  <td>OAX</td>
-                  <td>$0.177</td>
-                  <td>855</td>
-                  <td>15.92%</td>
-                  <td>8.03%</td>
-                  <td>59.80%</td>
-                  <td>11.58%</td>
-                  <td>$9.85 M</td>
-                  <td>$17.65 M</td>
-                  <td>$17.51 M</td>
-                  <td>Ethereum Ecosystem</td>
-                  <td>Bullish</td>
-                  <td>21 /100</td>
-                  <td>342</td>
-                  <td>0.21</td>
-                  <td>0.2</td>
-                </tr>
-              </table>
-            </div>
-          </div>
-        </div>
-        <div className="holding-tables">
-          <div className="holding-table-box">
-            <h3 className="holding-title"> DeFi <span className="holding-profit">6</span>
-            </h3>
-            <div className="holding-table defi">
-              <table>
-                <tr className="holdings-table-title">
-                  <th>Asset Name</th>
-                  <th>Price</th>
-                  <th>#</th>
-                  <th>24h</th>
-                  <th>7d</th>
-                  <th>1m</th>
-                  <th>3m</th>
-                  <th>MCap</th>
-                  <th>FDV</th>
-                  <th>24h volume</th>
-                  <th>Category</th>
-                  <th>Performance</th>
-                  <th>Bullishperiod</th>
-                  <th>Twitter performance</th>
-                  <th>AI Score</th>
-                  <th>Allocation</th>
-                </tr>
-                <tr>
-                  <td>INJ</td>
-                  <td>$7.41</td>
-                  <td>59</td>
-                  <td>4.08%</td>
-                  <td>13.94%</td>
-                  <td>-3.56%</td>
-                  <td>20.87%</td>
-                  <td>$620.63 M</td>
-                  <td>$741.00 M</td>
-                  <td>$14.45 M</td>
-                  <td>DeFi</td>
-                  <td>Bullish</td>
-                  <td>14 /100</td>
-                  <td>1114</td>
-                  <td>0.14</td>
-                  <td>3.4</td>
-                </tr>
-                <tr>
-                  <td>PENDLE</td>
-                  <td>$0.6159</td>
-                  <td>184</td>
-                  <td>0.87%</td>
-                  <td>11.12%</td>
-                  <td>13.89%</td>
-                  <td>16.86%</td>
-                  <td>$144.54 M</td>
-                  <td>$159.18 M</td>
-                  <td>$5.72 M</td>
-                  <td>DeFi</td>
-                  <td>Bullish</td>
-                  <td>27 /100</td>
-                  <td>985</td>
-                  <td>0.27</td>
-                  <td>3.4</td>
-                </tr>
-                <tr>
-                  <td>TRU</td>
-                  <td>$0.0376</td>
-                  <td>398</td>
-                  <td>4.51%</td>
-                  <td>24.93%</td>
-                  <td>27.69%</td>
-                  <td>-2.34%</td>
-                  <td>$40.13 M</td>
-                  <td>$45.06 M</td>
-                  <td>$4.35 M</td>
-                  <td>DeFi</td>
-                  <td>Bullish</td>
-                  <td>25 /100</td>
-                  <td>1011</td>
-                  <td>0.25</td>
-                  <td>3.4</td>
-                </tr>
-                <tr>
-                  <td>BICO</td>
-                  <td>$0.2081</td>
-                  <td>192</td>
-                  <td>1.63%</td>
-                  <td>7.98%</td>
-                  <td>-2.74%</td>
-                  <td>-9.78%</td>
-                  <td>$136.85 M</td>
-                  <td>$208.10 M</td>
-                  <td>$1.35 M</td>
-                  <td>DeFi</td>
-                  <td>Bullish</td>
-                  <td>14 /100</td>
-                  <td>962</td>
-                  <td>0.14</td>
-                  <td>3.4</td>
-                </tr>
-                <tr>
-                  <td>LQTY</td>
-                  <td>$0.823</td>
-                  <td>266</td>
-                  <td>1.04%</td>
-                  <td>8.39%</td>
-                  <td>2.82%</td>
-                  <td>-2.30%</td>
-                  <td>$76.77 M</td>
-                  <td>$82.15 M</td>
-                  <td>$8.22 M</td>
-                  <td>DeFi</td>
-                  <td>Bullish</td>
-                  <td>13 /100</td>
-                  <td>1319</td>
-                  <td>0.13</td>
-                  <td>3.4</td>
-                </tr>
-                <tr>
-                  <td>LEVER</td>
-                  <td>$0.001387</td>
-                  <td>446</td>
-                  <td>1.69%</td>
-                  <td>11.10%</td>
-                  <td>28.23%</td>
-                  <td>16.81%</td>
-                  <td>$33.74 M</td>
-                  <td>$49.00 M</td>
-                  <td>$8.98 M</td>
-                  <td>DeFi</td>
-                  <td>Bullish</td>
-                  <td>21 /100</td>
-                  <td>121</td>
-                  <td>0.21</td>
-                  <td>3.4</td>
-                </tr>
-              </table>
-            </div>
-          </div>
-        </div>
-        <div className="holding-tables">
-          <div className="holding-table-box">
-            <h3 className="holding-title"> Oracle <span className="holding-profit">5</span>
-            </h3>
-            <div className="holding-table defi">
-              <table>
-                <tr className="holdings-table-title">
-                  <th>Asset Name</th>
-                  <th>Price</th>
-                  <th>#</th>
-                  <th>24h</th>
-                  <th>7d</th>
-                  <th>1m</th>
-                  <th>3m</th>
-                  <th>MCap</th>
-                  <th>FDV</th>
-                  <th>24h volume</th>
-                  <th>Category</th>
-                  <th>Performance</th>
-                  <th>Bullishperiod</th>
-                  <th>Twitter performance</th>
-                  <th>AI Score</th>
-                  <th>Allocation</th>
-                </tr>
-                <tr>
-                  <td>LINK</td>
-                  <td>$6.74</td>
-                  <td>18</td>
-                  <td>8.03%</td>
-                  <td>13.93%</td>
-                  <td>7.83%</td>
-                  <td>28.45%</td>
-                  <td>$3.75 B</td>
-                  <td>$6.74 B</td>
-                  <td>$183.08 M</td>
-                  <td>Oracle</td>
-                  <td>Bullish</td>
-                  <td>13 /100</td>
-                  <td>2129</td>
-                  <td>0.13</td>
-                  <td>0.5</td>
-                </tr>
-                <tr>
-                  <td>API3</td>
-                  <td>$1.07</td>
-                  <td>234</td>
-                  <td>-0.05%</td>
-                  <td>6.52%</td>
-                  <td>12.25%</td>
-                  <td>12.79%</td>
-                  <td>$93.16 M</td>
-                  <td>$135.10 M</td>
-                  <td>$4.21 M</td>
-                  <td>Oracle</td>
-                  <td>Bullish</td>
-                  <td>14 /100</td>
-                  <td>926</td>
-                  <td>0.14</td>
-                  <td>0.5</td>
-                </tr>
-                <tr>
-                  <td>BAND</td>
-                  <td>$1.07</td>
-                  <td>185</td>
-                  <td>3.67%</td>
-                  <td>8.43%</td>
-                  <td>7.97%</td>
-                  <td>-6.69%</td>
-                  <td>$143.73 M</td>
-                  <td>$148.45 M</td>
-                  <td>$4.13 M</td>
-                  <td>Oracle</td>
-                  <td>Bullish</td>
-                  <td>14 /100</td>
-                  <td>989</td>
-                  <td>0.14</td>
-                  <td>0.5</td>
-                </tr>
-                <tr>
-                  <td>CTSI</td>
-                  <td>$0.1288</td>
-                  <td>227</td>
-                  <td>0.41%</td>
-                  <td>7.88%</td>
-                  <td>6.02%</td>
-                  <td>0.70%</td>
-                  <td>$95.79 M</td>
-                  <td>$129.00 M</td>
-                  <td>$2.65 M</td>
-                  <td>Oracle</td>
-                  <td>Bullish</td>
-                  <td>17 /100</td>
-                  <td>630</td>
-                  <td>0.17</td>
-                  <td>0.5</td>
-                </tr>
-                <tr>
-                  <td>TRB</td>
-                  <td>$29.36</td>
-                  <td>272</td>
-                  <td>-24.57%</td>
-                  <td>23.21%</td>
-                  <td>192.84%</td>
-                  <td>226.04%</td>
-                  <td>$74.46 M</td>
-                  <td>$74.78 M</td>
-                  <td>$127.62 M</td>
-                  <td>Oracle</td>
-                  <td>Bullish</td>
-                  <td>29 /100</td>
-                  <td>755</td>
-                  <td>0.29</td>
-                  <td>0.5</td>
-                </tr>
-              </table>
-            </div>
-          </div>
-        </div>
-        <div className="holding-tables">
-          <div className="holding-table-box">
-            <h3 className="holding-title"> NFT <span className="holding-profit">2</span>
-            </h3>
-            <div className="holding-table defi">
-              <table>
-                <tr className="holdings-table-title">
-                  <th>Asset Name</th>
-                  <th>Price</th>
-                  <th>#</th>
-                  <th>24h</th>
-                  <th>7d</th>
-                  <th>1m</th>
-                  <th>3m</th>
-                  <th>MCap</th>
-                  <th>FDV</th>
-                  <th>24h volume</th>
-                  <th>Category</th>
-                  <th>Performance</th>
-                  <th>Bullishperiod</th>
-                  <th>Twitter performance</th>
-                  <th>AI Score</th>
-                  <th>Allocation</th>
-                </tr>
-                <tr>
-                  <td>RARE</td>
-                  <td>$0.062803</td>
-                  <td>479</td>
-                  <td>3.03%</td>
-                  <td>8.24%</td>
-                  <td>4.96%</td>
-                  <td>-4.80%</td>
-                  <td>$29.61 M</td>
-                  <td>$62.60 M</td>
-                  <td>$808,567.53</td>
-                  <td>NFT</td>
-                  <td>Bullish</td>
-                  <td>11 /100</td>
-                  <td>3404</td>
-                  <td>0.11</td>
-                  <td>0.2</td>
-                </tr>
 
-                <tr>
-                  <td>DEGO</td>
-                  <td>$1.36</td>
-                  <td>969</td>
-                  <td>1.28%</td>
-                  <td>7.96%</td>
-                  <td>1.35%</td>
-                  <td>-1.39%</td>
-                  <td>$7.39 M</td>
-                  <td>$16.29 M</td>
-                  <td>$1.71 M</td>
-                  <td>NFT</td>
-                  <td>Bullish</td>
-                  <td>10 /100</td>
-                  <td>540</td>
-                  <td>0.1</td>
-                  <td>0.2</td>
-                </tr>
-              </table>
-            </div>
-          </div>
-        </div>
-        <div className="holding-tables">
-          <div className="holding-table-box">
-            <h3 className="holding-title"> Yield Farming <span className="holding-profit">1</span>
-            </h3>
-            <div className="holding-table defi">
-              <table>
-                <tr className="holdings-table-title">
-                  <th>Asset Name</th>
-                  <th>Price</th>
-                  <th>#</th>
-                  <th>24h</th>
-                  <th>7d</th>
-                  <th>1m</th>
-                  <th>3m</th>
-                  <th>MCap</th>
-                  <th>FDV</th>
-                  <th>24h volume</th>
-                  <th>Category</th>
-                  <th>Performance</th>
-                  <th>Bullishperiod</th>
-                  <th>Twitter performance</th>
-                  <th>AI Score</th>
-                  <th>Allocation</th>
-                </tr>
-                <tr>
-                  <td>SPELL</td>
-                  <td>$0.00047953</td>
-                  <td>346</td>
-                  <td>1.47%</td>
-                  <td>26.82%</td>
-                  <td>24.43%</td>
-                  <td>8.62%</td>
-                  <td>$51.77 M</td>
-                  <td>$94.48 M</td>
-                  <td>$5.48 M</td>
-                  <td>Yield Farming</td>
-                  <td>Bullish</td>
-                  <td>11 /100</td>
-                  <td>1289</td>
-                  <td>0.11</td>
-                  <td>0.2</td>
-                </tr>
-              </table>
-            </div>
-          </div>
-        </div>
-        <div className="holding-tables">
-          <div className="holding-table-box">
-            <h3 className="holding-title"> Gaming <span className="holding-profit">2</span>
-            </h3>
-            <div className="holding-table defi">
-              <table>
-                <tr className="holdings-table-title">
-                  <th>Asset Name</th>
-                  <th>Price</th>
-                  <th>#</th>
-                  <th>24h</th>
-                  <th>7d</th>
-                  <th>1m</th>
-                  <th>3m</th>
-                  <th>MCap</th>
-                  <th>FDV</th>
-                  <th>24h volume</th>
-                  <th>Category</th>
-                  <th>Performance</th>
-                  <th>Bullishperiod</th>
-                  <th>Twitter performance</th>
-                  <th>AI Score</th>
-                  <th>Allocation</th>
-                </tr>
-                <tr>
-                  <td>TLM</td>
-                  <td>$0.01007</td>
-                  <td>422</td>
-                  <td>-0.30%</td>
-                  <td>5.38%</td>
-                  <td>0.14%</td>
-                  <td>-3.93%</td>
-                  <td>$36.81 M</td>
-                  <td>$61.27 M</td>
-                  <td>$3.80 M</td>
-                  <td>Gaming</td>
-                  <td>Bullish</td>
-                  <td>13 /100</td>
-                  <td>814</td>
-                  <td>0.13</td>
-                  <td>0.2</td>
-                </tr>
-                <tr>
-                  <td>HELLO</td>
-                  <td>$0.0437</td>
-                  <td>560</td>
-                  <td>1.99%</td>
-                  <td>5.51%</td>
-                  <td>0.76%</td>
-                  <td>27.23%</td>
-                  <td>$23.22 M</td>
-                  <td>$43.70 M</td>
-                  <td>$902,272.08</td>
-                  <td>Gaming</td>
-                  <td>Bullish</td>
-                  <td>21 /100</td>
-                  <td>451</td>
-                  <td>0.21</td>
-                  <td>0.2</td>
-                </tr>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
+      <InvestModal
+        balanceOfAllTokens={balanceOfAllTokens[portfolioIndex]} portfolio={investPortfolio}
+        setInvestPortfolio={setInvestPortfolio} setRefetch={setRefetch} allowanceUSDC={allowanceUSDC}
+        balanceUSDT={balanceUSDT} balanceUSDC={balanceUSDC} allowanceUSDT={allowanceUSDT}
+        isStopable={!!balanceOfAllTokens[portfolioIndex]?.find(coin => Number(coin.balance) > 0)}
+      />
     </>
   );
 };
